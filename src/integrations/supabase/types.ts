@@ -14,16 +14,421 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      app_settings: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          key: string
+          updated_at: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          key: string
+          updated_at?: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          key?: string
+          updated_at?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          assigned_to: string | null
+          calculated_price_high: number | null
+          calculated_price_low: number | null
+          category: Database["public"]["Enums"]["machine_category"]
+          condition: Database["public"]["Enums"]["machine_condition"]
+          contact_company: string | null
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at: string
+          damage_description: string | null
+          documents: Json | null
+          drive_type: string | null
+          equipment: Json | null
+          final_offer: number | null
+          gdpr_consent: boolean
+          has_ce: boolean | null
+          has_damage: boolean | null
+          has_manual: boolean | null
+          has_service_book: boolean | null
+          has_uvv: boolean | null
+          id: string
+          images: Json | null
+          is_custom_model: boolean | null
+          location_zip: string
+          manufacturer_name: string
+          model_name: string
+          notes: string | null
+          operating_hours: number | null
+          serial_number: string | null
+          status: Database["public"]["Enums"]["lead_status"]
+          subcategory: string | null
+          updated_at: string
+          wants_pickup: boolean | null
+          weight_class: string | null
+          working_height: string | null
+          year_built: number
+        }
+        Insert: {
+          assigned_to?: string | null
+          calculated_price_high?: number | null
+          calculated_price_low?: number | null
+          category: Database["public"]["Enums"]["machine_category"]
+          condition: Database["public"]["Enums"]["machine_condition"]
+          contact_company?: string | null
+          contact_email: string
+          contact_name: string
+          contact_phone: string
+          created_at?: string
+          damage_description?: string | null
+          documents?: Json | null
+          drive_type?: string | null
+          equipment?: Json | null
+          final_offer?: number | null
+          gdpr_consent?: boolean
+          has_ce?: boolean | null
+          has_damage?: boolean | null
+          has_manual?: boolean | null
+          has_service_book?: boolean | null
+          has_uvv?: boolean | null
+          id?: string
+          images?: Json | null
+          is_custom_model?: boolean | null
+          location_zip: string
+          manufacturer_name: string
+          model_name: string
+          notes?: string | null
+          operating_hours?: number | null
+          serial_number?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          subcategory?: string | null
+          updated_at?: string
+          wants_pickup?: boolean | null
+          weight_class?: string | null
+          working_height?: string | null
+          year_built: number
+        }
+        Update: {
+          assigned_to?: string | null
+          calculated_price_high?: number | null
+          calculated_price_low?: number | null
+          category?: Database["public"]["Enums"]["machine_category"]
+          condition?: Database["public"]["Enums"]["machine_condition"]
+          contact_company?: string | null
+          contact_email?: string
+          contact_name?: string
+          contact_phone?: string
+          created_at?: string
+          damage_description?: string | null
+          documents?: Json | null
+          drive_type?: string | null
+          equipment?: Json | null
+          final_offer?: number | null
+          gdpr_consent?: boolean
+          has_ce?: boolean | null
+          has_damage?: boolean | null
+          has_manual?: boolean | null
+          has_service_book?: boolean | null
+          has_uvv?: boolean | null
+          id?: string
+          images?: Json | null
+          is_custom_model?: boolean | null
+          location_zip?: string
+          manufacturer_name?: string
+          model_name?: string
+          notes?: string | null
+          operating_hours?: number | null
+          serial_number?: string | null
+          status?: Database["public"]["Enums"]["lead_status"]
+          subcategory?: string | null
+          updated_at?: string
+          wants_pickup?: boolean | null
+          weight_class?: string | null
+          working_height?: string | null
+          year_built?: number
+        }
+        Relationships: []
+      }
+      machines: {
+        Row: {
+          category: Database["public"]["Enums"]["machine_category"]
+          condition: Database["public"]["Enums"]["machine_condition"]
+          created_at: string
+          description: string | null
+          documents: Json | null
+          drive_type: string | null
+          features: Json | null
+          financing_available: boolean | null
+          id: string
+          images: Json | null
+          is_featured: boolean | null
+          is_published: boolean | null
+          is_sold: boolean | null
+          location_name: string | null
+          manufacturer_name: string
+          model_name: string | null
+          operating_hours: number | null
+          price: number
+          serial_number: string | null
+          subcategory: string | null
+          title: string
+          updated_at: string
+          weight_kg: number | null
+          working_height_m: number | null
+          year_built: number
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["machine_category"]
+          condition?: Database["public"]["Enums"]["machine_condition"]
+          created_at?: string
+          description?: string | null
+          documents?: Json | null
+          drive_type?: string | null
+          features?: Json | null
+          financing_available?: boolean | null
+          id?: string
+          images?: Json | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          is_sold?: boolean | null
+          location_name?: string | null
+          manufacturer_name: string
+          model_name?: string | null
+          operating_hours?: number | null
+          price: number
+          serial_number?: string | null
+          subcategory?: string | null
+          title: string
+          updated_at?: string
+          weight_kg?: number | null
+          working_height_m?: number | null
+          year_built: number
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["machine_category"]
+          condition?: Database["public"]["Enums"]["machine_condition"]
+          created_at?: string
+          description?: string | null
+          documents?: Json | null
+          drive_type?: string | null
+          features?: Json | null
+          financing_available?: boolean | null
+          id?: string
+          images?: Json | null
+          is_featured?: boolean | null
+          is_published?: boolean | null
+          is_sold?: boolean | null
+          location_name?: string | null
+          manufacturer_name?: string
+          model_name?: string | null
+          operating_hours?: number | null
+          price?: number
+          serial_number?: string | null
+          subcategory?: string | null
+          title?: string
+          updated_at?: string
+          weight_kg?: number | null
+          working_height_m?: number | null
+          year_built?: number
+        }
+        Relationships: []
+      }
+      manufacturers: {
+        Row: {
+          category: Database["public"]["Enums"]["machine_category"]
+          created_at: string
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          sort_order: number | null
+          updated_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["machine_category"]
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["machine_category"]
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          sort_order?: number | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      models: {
+        Row: {
+          created_at: string
+          id: string
+          is_active: boolean
+          manufacturer_id: string
+          name: string
+          subcategory: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          manufacturer_id: string
+          name: string
+          subcategory?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          manufacturer_id?: string
+          name?: string
+          subcategory?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "models_manufacturer_id_fkey"
+            columns: ["manufacturer_id"]
+            isOneToOne: false
+            referencedRelation: "manufacturers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      pricing_factors: {
+        Row: {
+          category: Database["public"]["Enums"]["machine_category"]
+          created_at: string
+          description: string | null
+          factor_key: string
+          factor_type: string
+          factor_value: number
+          id: string
+          is_active: boolean
+          updated_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["machine_category"]
+          created_at?: string
+          description?: string | null
+          factor_key: string
+          factor_type: string
+          factor_value: number
+          id?: string
+          is_active?: boolean
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["machine_category"]
+          created_at?: string
+          description?: string | null
+          factor_key?: string
+          factor_type?: string
+          factor_value?: number
+          id?: string
+          is_active?: boolean
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "moderator" | "user"
+      lead_status:
+        | "neu"
+        | "in_bearbeitung"
+        | "angebot_erstellt"
+        | "abgeschlossen"
+        | "abgelehnt"
+      machine_category: "bagger" | "arbeitsbuehne"
+      machine_condition: "sehr_gut" | "gut" | "ok" | "reparaturbeduerftig"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +555,17 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "moderator", "user"],
+      lead_status: [
+        "neu",
+        "in_bearbeitung",
+        "angebot_erstellt",
+        "abgeschlossen",
+        "abgelehnt",
+      ],
+      machine_category: ["bagger", "arbeitsbuehne"],
+      machine_condition: ["sehr_gut", "gut", "ok", "reparaturbeduerftig"],
+    },
   },
 } as const
