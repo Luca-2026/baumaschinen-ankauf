@@ -4,12 +4,11 @@ import {
   Clock, 
   Shield, 
   Building2,
-  ArrowRight,
-  Tractor,
-  ChevronsUp
+  ArrowRight
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TrustBadge } from "@/components/ui/TrustBadge";
+import { MachineIcon } from "@/components/ui/MachineIcon";
 
 const trustItems = [
   { icon: MapPin, title: "NRW – 3 Standorte" },
@@ -89,8 +88,8 @@ export function HeroSection() {
                 className="group relative flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1 animate-fade-in"
                 style={{ animationDelay: '200ms' }}
               >
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
-                  <Tractor className="h-10 w-10 text-primary transition-transform duration-300 group-hover:scale-110" />
+                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
+                  <MachineIcon type="bagger" size="xl" />
                 </div>
                 <span className="text-xl font-semibold text-headline">Bagger</span>
                 <span className="text-sm text-muted-foreground text-center">
@@ -104,8 +103,8 @@ export function HeroSection() {
                 className="group relative flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1 animate-fade-in"
                 style={{ animationDelay: '300ms' }}
               >
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
-                  <ChevronsUp className="h-10 w-10 text-primary transition-transform duration-300 group-hover:scale-110" />
+                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
+                  <MachineIcon type="arbeitsbuehne" size="xl" />
                 </div>
                 <span className="text-xl font-semibold text-headline">Arbeitsbühne</span>
                 <span className="text-sm text-muted-foreground text-center">

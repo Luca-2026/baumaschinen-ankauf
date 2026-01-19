@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Check, Tractor, ChevronsUp } from "lucide-react";
+import { Check } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { MachineIcon } from "@/components/ui/MachineIcon";
 import { cn } from "@/lib/utils";
 
 const categories = {
   bagger: {
-    icon: Tractor,
     title: "Bagger",
     types: [
       "Minibagger (bis 6t)",
@@ -24,7 +24,6 @@ const categories = {
     ],
   },
   arbeitsbuehnen: {
-    icon: ChevronsUp,
     title: "Arbeitsbühnen",
     types: [
       "Scherenarbeitsbühnen",
@@ -47,7 +46,6 @@ const categories = {
 export function MachineCategoriesSection() {
   const [activeTab, setActiveTab] = useState<"bagger" | "arbeitsbuehnen">("bagger");
   const activeCategory = categories[activeTab];
-  const Icon = activeCategory.icon;
 
   return (
     <section className="py-16 md:py-24">
@@ -69,7 +67,7 @@ export function MachineCategoriesSection() {
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <Tractor className="h-4 w-4" />
+              <MachineIcon type="bagger" size="sm" />
               Bagger
             </button>
             <button
@@ -81,7 +79,7 @@ export function MachineCategoriesSection() {
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <ChevronsUp className="h-4 w-4" />
+              <MachineIcon type="arbeitsbuehne" size="sm" />
               Arbeitsbühnen
             </button>
           </div>
@@ -93,7 +91,7 @@ export function MachineCategoriesSection() {
           <div className="rounded-2xl border bg-card p-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                <Icon className="h-6 w-6 text-primary" />
+                <MachineIcon type={activeTab === "bagger" ? "bagger" : "arbeitsbuehne"} size="md" />
               </div>
               <h3 className="text-xl font-semibold text-headline">
                 {activeCategory.title} Typen
