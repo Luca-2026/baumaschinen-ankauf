@@ -1,5 +1,6 @@
-import { Shovel, Construction, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { WizardFormData, baggerSubcategories, arbeitsbuehneSubcategories } from "@/types/wizard";
+import { MachineIcon } from "@/components/ui/MachineIcon";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
@@ -54,16 +55,11 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
         >
           <div
             className={cn(
-              "flex h-20 w-20 items-center justify-center rounded-full transition-colors",
+              "flex h-24 w-24 items-center justify-center rounded-full transition-colors",
               formData.category === "bagger" ? "bg-primary/20" : "bg-muted"
             )}
           >
-            <Shovel
-              className={cn(
-                "h-10 w-10",
-                formData.category === "bagger" ? "text-primary" : "text-muted-foreground"
-              )}
-            />
+            <MachineIcon type="bagger" size="xl" />
           </div>
           <span className="text-xl font-semibold text-headline">Bagger</span>
           <span className="text-sm text-muted-foreground text-center">
@@ -88,16 +84,11 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
         >
           <div
             className={cn(
-              "flex h-20 w-20 items-center justify-center rounded-full transition-colors",
+              "flex h-24 w-24 items-center justify-center rounded-full transition-colors",
               formData.category === "arbeitsbuehne" ? "bg-primary/20" : "bg-muted"
             )}
           >
-            <Construction
-              className={cn(
-                "h-10 w-10",
-                formData.category === "arbeitsbuehne" ? "text-primary" : "text-muted-foreground"
-              )}
-            />
+            <MachineIcon type="arbeitsbuehne" size="xl" />
           </div>
           <span className="text-xl font-semibold text-headline">Arbeitsbühne</span>
           <span className="text-sm text-muted-foreground text-center">
