@@ -1,11 +1,177 @@
 import { WizardFormData } from "@/types/wizard";
+import { supabase } from "@/integrations/supabase/client";
 
-interface PriceRange {
+export interface PriceRange {
   low: number;
   high: number;
+  mid?: number;
+  isMarketBased?: boolean;
+  matchedModel?: string;
 }
 
-// Price calculation based on the defined factors
+interface MarketPriceData {
+  manufacturer: string;
+  model: string;
+  reference_year: number;
+  age_years: number;
+  hours_min: number | null;
+  hours_max: number | null;
+  price_min_eur: number;
+  price_max_eur: number;
+  price_mid_eur: number;
+  segment: string;
+}
+
+// Fetch market data for price calculation
+export async function fetchMarketPriceData(
+  category: string,
+  manufacturer: string,
+  model?: string
+): Promise<MarketPriceData[]> {
+  try {
+    let query = supabase
+      .from('market_price_data')
+      .select('*')
+      .eq('category', category)
+      .ilike('manufacturer', `%${manufacturer}%`);
+    
+    if (model) {
+      query = query.ilike('model', `%${model}%`);
+    }
+    
+    const { data, error } = await query;
+    
+    if (error) {
+      console.error('Error fetching market data:', error);
+      return [];
+    }
+    
+    return (data || []) as MarketPriceData[];
+  } catch (error) {
+    console.error('Error in fetchMarketPriceData:', error);
+    return [];
+  }
+}
+
+// Find best matching market data entry
+function findBestMatch(
+  marketData: MarketPriceData[],
+  yearBuilt: number,
+  operatingHours?: number
+): MarketPriceData | null {
+  if (marketData.length === 0) return null;
+  
+  // Score each entry based on similarity
+  const scored = marketData.map(entry => {
+    let score = 0;
+    
+    // Year similarity (closer is better)
+    const yearDiff = Math.abs(entry.reference_year - yearBuilt);
+    score += Math.max(0, 10 - yearDiff); // Up to 10 points for exact year match
+    
+    // Hours similarity if available
+    if (operatingHours && entry.hours_min && entry.hours_max) {
+      const avgHours = (entry.hours_min + entry.hours_max) / 2;
+      const hoursDiff = Math.abs(avgHours - operatingHours);
+      score += Math.max(0, 5 - hoursDiff / 1000); // Up to 5 points
+    }
+    
+    return { entry, score };
+  });
+  
+  // Sort by score descending
+  scored.sort((a, b) => b.score - a.score);
+  
+  return scored[0]?.entry || null;
+}
+
+// Calculate price adjustment based on condition, age, hours
+function calculateAdjustmentFactor(
+  data: WizardFormData,
+  referenceAge: number
+): number {
+  const currentYear = new Date().getFullYear();
+  const actualAge = currentYear - (data.yearBuilt || currentYear);
+  
+  let factor = 1.0;
+  
+  // Age difference adjustment
+  const ageDifference = actualAge - referenceAge;
+  if (ageDifference > 0) {
+    // Older than reference: depreciate
+    factor *= Math.pow(0.93, ageDifference);
+  } else if (ageDifference < 0) {
+    // Newer than reference: appreciate
+    factor *= Math.pow(1.05, Math.abs(ageDifference));
+  }
+  
+  // Condition factor
+  const conditionFactors: Record<string, number> = {
+    sehr_gut: 1.15,
+    gut: 1.0,
+    ok: 0.85,
+    reparaturbeduerftig: 0.65,
+  };
+  factor *= conditionFactors[data.condition] || 1.0;
+  
+  // Documentation bonus
+  if (data.hasServiceBook) factor += 0.03;
+  if (data.hasUvv) factor += 0.03;
+  if (data.hasCe) factor += 0.02;
+  if (data.hasManual) factor += 0.01;
+  
+  // Equipment bonus (max 8%)
+  const equipmentBonus = Math.min((data.equipment?.length || 0) * 0.02, 0.08);
+  factor += equipmentBonus;
+  
+  // Damage penalty
+  if (data.hasDamage) factor *= 0.80;
+  
+  return factor;
+}
+
+// Calculate reference price using market data
+export async function calculateMarketBasedPrice(
+  data: WizardFormData
+): Promise<PriceRange | null> {
+  if (!data.category || !data.yearBuilt || !data.condition || !data.manufacturerName) {
+    return null;
+  }
+  
+  // Try to fetch market data
+  const marketData = await fetchMarketPriceData(
+    data.category,
+    data.manufacturerName,
+    data.modelName
+  );
+  
+  if (marketData.length > 0) {
+    // Find best matching entry
+    const bestMatch = findBestMatch(marketData, data.yearBuilt, data.operatingHours);
+    
+    if (bestMatch) {
+      const adjustmentFactor = calculateAdjustmentFactor(data, bestMatch.age_years);
+      
+      // Calculate adjusted prices
+      const adjustedLow = bestMatch.price_min_eur * adjustmentFactor;
+      const adjustedHigh = bestMatch.price_max_eur * adjustmentFactor;
+      const adjustedMid = bestMatch.price_mid_eur * adjustmentFactor;
+      
+      return {
+        low: Math.round(adjustedLow / 100) * 100,
+        high: Math.round(adjustedHigh / 100) * 100,
+        mid: Math.round(adjustedMid / 100) * 100,
+        isMarketBased: true,
+        matchedModel: `${bestMatch.manufacturer} ${bestMatch.model}`,
+      };
+    }
+  }
+  
+  // Fallback to formula-based calculation if no market data
+  return calculateReferencePrice(data);
+}
+
+// Original formula-based calculation (fallback)
 export function calculateReferencePrice(data: WizardFormData): PriceRange | null {
   if (!data.category || !data.yearBuilt || !data.condition) {
     return null;
@@ -32,7 +198,7 @@ export function calculateReferencePrice(data: WizardFormData): PriceRange | null
   // Get base value
   const sizeKey = data.category === 'bagger' ? data.weightClass : data.workingHeight;
   const categoryBaseValues = baseValues[data.category];
-  let baseValue = categoryBaseValues?.[sizeKey] || 50000; // Default fallback
+  let baseValue = categoryBaseValues?.[sizeKey] || 50000;
 
   // Age factor
   const currentYear = new Date().getFullYear();
@@ -91,6 +257,7 @@ export function calculateReferencePrice(data: WizardFormData): PriceRange | null
   return {
     low: Math.round(calculatedPrice * 0.90 / 100) * 100,
     high: Math.round(calculatedPrice * 1.10 / 100) * 100,
+    isMarketBased: false,
   };
 }
 
