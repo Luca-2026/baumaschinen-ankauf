@@ -23,6 +23,7 @@ const Ankauf = () => {
     isSubmitting,
     isSubmitted,
     priceRange,
+    isPriceLoading,
     updateFormData,
     goToStep,
     nextStep,
@@ -185,15 +186,34 @@ const Ankauf = () => {
                     <h3 className="font-semibold text-headline">Referenzpreis</h3>
                   </div>
 
-                  {priceRange ? (
+                  {isPriceLoading ? (
+                    <div className="bg-muted/50 rounded-xl p-4 mb-4 animate-pulse">
+                      <div className="h-4 bg-muted rounded w-1/2 mb-2"></div>
+                      <div className="h-8 bg-muted rounded w-3/4"></div>
+                    </div>
+                  ) : priceRange ? (
                     <>
                       <div className="bg-accent/10 rounded-xl p-4 mb-4">
-                        <p className="text-sm text-muted-foreground mb-1">
-                          Vorläufige Schätzung:
-                        </p>
+                        <div className="flex items-center gap-2 mb-1">
+                          <p className="text-sm text-muted-foreground">
+                            {priceRange.isMarketBased 
+                              ? "Marktdaten-basierte Schätzung:"
+                              : "Vorläufige Schätzung:"}
+                          </p>
+                          {priceRange.isMarketBased && (
+                            <span className="text-xs bg-success/20 text-success px-2 py-0.5 rounded-full">
+                              Marktdaten
+                            </span>
+                          )}
+                        </div>
                         <p className="text-2xl md:text-3xl font-bold text-accent">
                           {formatPriceRange(priceRange)}
                         </p>
+                        {priceRange.matchedModel && (
+                          <p className="text-xs text-muted-foreground mt-2">
+                            Basierend auf: {priceRange.matchedModel}
+                          </p>
+                        )}
                       </div>
 
                       {/* How it's calculated */}
@@ -218,7 +238,16 @@ const Ankauf = () => {
                             Der Referenzpreis basiert auf:
                           </p>
                           <ul className="space-y-1 list-disc list-inside">
-                            <li>Kategorie & Größenklasse</li>
+                            {priceRange.isMarketBased ? (
+                              <>
+                                <li>Aktuelle Marktpreise vergleichbarer Maschinen</li>
+                                <li>Hersteller & Modellvergleich</li>
+                              </>
+                            ) : (
+                              <>
+                                <li>Kategorie & Größenklasse</li>
+                              </>
+                            )}
                             <li>Baujahr & Alter</li>
                             <li>Betriebsstunden</li>
                             <li>Zustand der Maschine</li>

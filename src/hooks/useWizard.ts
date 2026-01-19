@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { WizardFormData, initialWizardData } from "@/types/wizard";
-import { calculateReferencePrice } from "@/lib/priceCalculation";
+import { calculateMarketBasedPrice, calculateReferencePrice, PriceRange } from "@/lib/priceCalculation";
 import { useToast } from "@/hooks/use-toast";
 
 interface Manufacturer {
@@ -29,6 +29,8 @@ export function useWizard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [leadId, setLeadId] = useState<string | null>(null);
+  const [priceRange, setPriceRange] = useState<PriceRange | null>(null);
+  const [isPriceLoading, setIsPriceLoading] = useState(false);
 
   // Initialize category from URL params
   useEffect(() => {
@@ -53,6 +55,43 @@ export function useWizard() {
       setModels([]);
     }
   }, [formData.manufacturerId]);
+
+  // Calculate price when relevant data changes
+  useEffect(() => {
+    const calculatePrice = async () => {
+      if (formData.category && formData.yearBuilt && formData.condition) {
+        setIsPriceLoading(true);
+        try {
+          // Try market-based calculation first
+          const marketPrice = await calculateMarketBasedPrice(formData);
+          setPriceRange(marketPrice);
+        } catch (error) {
+          console.error("Error calculating market-based price:", error);
+          // Fallback to formula-based
+          setPriceRange(calculateReferencePrice(formData));
+        } finally {
+          setIsPriceLoading(false);
+        }
+      } else {
+        setPriceRange(null);
+      }
+    };
+
+    calculatePrice();
+  }, [
+    formData.category,
+    formData.manufacturerName,
+    formData.modelName,
+    formData.yearBuilt,
+    formData.operatingHours,
+    formData.condition,
+    formData.hasServiceBook,
+    formData.hasUvv,
+    formData.hasCe,
+    formData.hasManual,
+    formData.equipment,
+    formData.hasDamage,
+  ]);
 
   const fetchManufacturers = async (category: 'bagger' | 'arbeitsbuehne') => {
     try {
@@ -136,8 +175,8 @@ export function useWizard() {
     setIsSubmitting(true);
     
     try {
-      // Calculate price
-      const priceRange = calculateReferencePrice(formData);
+      // Use already calculated price
+      const finalPriceRange = priceRange || calculateReferencePrice(formData);
       
       // Upload files
       let imageUrls: string[] = [];
@@ -179,8 +218,8 @@ export function useWizard() {
         damage_description: formData.damageDescription || null,
         images: imageUrls,
         documents: documentUrls,
-        calculated_price_low: priceRange?.low || null,
-        calculated_price_high: priceRange?.high || null,
+        calculated_price_low: finalPriceRange?.low || null,
+        calculated_price_high: finalPriceRange?.high || null,
         gdpr_consent: formData.gdprConsent,
         wants_pickup: formData.wantsPickup,
       };
@@ -211,8 +250,8 @@ export function useWizard() {
             operatingHours: formData.operatingHours,
             condition: formData.condition,
             locationZip: formData.locationZip,
-            priceRangeLow: priceRange?.low,
-            priceRangeHigh: priceRange?.high,
+            priceRangeLow: finalPriceRange?.low,
+            priceRangeHigh: finalPriceRange?.high,
           },
         });
       } catch (emailError) {
@@ -239,8 +278,6 @@ export function useWizard() {
     }
   };
 
-  const priceRange = calculateReferencePrice(formData);
-
   return {
     currentStep,
     formData,
@@ -251,6 +288,7 @@ export function useWizard() {
     isSubmitted,
     leadId,
     priceRange,
+    isPriceLoading,
     updateFormData,
     goToStep,
     nextStep,
