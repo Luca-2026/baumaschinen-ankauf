@@ -278,6 +278,66 @@ export type Database = {
         }
         Relationships: []
       }
+      market_price_data: {
+        Row: {
+          age_years: number
+          as_of_date: string
+          category: string
+          created_at: string
+          hours_max: number | null
+          hours_min: number | null
+          id: string
+          manufacturer: string
+          model: string
+          price_max_eur: number
+          price_mid_eur: number
+          price_min_eur: number
+          reference_year: number
+          segment: string
+          source_note: string | null
+          source_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          age_years: number
+          as_of_date?: string
+          category: string
+          created_at?: string
+          hours_max?: number | null
+          hours_min?: number | null
+          id?: string
+          manufacturer: string
+          model: string
+          price_max_eur: number
+          price_mid_eur: number
+          price_min_eur: number
+          reference_year: number
+          segment: string
+          source_note?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          age_years?: number
+          as_of_date?: string
+          category?: string
+          created_at?: string
+          hours_max?: number | null
+          hours_min?: number | null
+          id?: string
+          manufacturer?: string
+          model?: string
+          price_max_eur?: number
+          price_mid_eur?: number
+          price_min_eur?: number
+          reference_year?: number
+          segment?: string
+          source_note?: string | null
+          source_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       models: {
         Row: {
           created_at: string
