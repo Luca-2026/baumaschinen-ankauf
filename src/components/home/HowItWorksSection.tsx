@@ -1,12 +1,15 @@
+import { useState, useEffect } from "react";
 import { 
   FileText, 
   Calculator, 
   CalendarCheck, 
   ClipboardCheck, 
-  Banknote 
+  Banknote,
+  ChevronRight
 } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
-import { StepCard } from "@/components/ui/StepCard";
+import { cn } from "@/lib/utils";
+import { LucideIcon } from "lucide-react";
 
 const steps = [
   {
@@ -41,9 +44,91 @@ const steps = [
   },
 ];
 
-export function HowItWorksSection() {
+interface AnimatedStepCardProps {
+  step: number;
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  isActive: boolean;
+  isPast: boolean;
+  delay: number;
+}
+
+function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPast, delay }: AnimatedStepCardProps) {
   return (
-    <section className="py-16 md:py-24 bg-background-muted">
+    <div
+      className={cn(
+        "relative flex flex-col items-center text-center p-6 rounded-xl transition-all duration-500 animate-fade-in",
+        isActive
+          ? "bg-card shadow-xl border-2 border-accent scale-105"
+          : isPast
+          ? "bg-card/80 shadow-sm border border-success/30"
+          : "bg-card shadow-sm border border-border hover:shadow-md hover:-translate-y-1"
+      )}
+      style={{ animationDelay: `${delay}ms` }}
+    >
+      {/* Step Number */}
+      <div
+        className={cn(
+          "absolute -top-3 left-1/2 -translate-x-1/2 flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300",
+          isActive
+            ? "bg-accent text-accent-foreground scale-125 shadow-lg"
+            : isPast
+            ? "bg-success text-white"
+            : "bg-primary text-primary-foreground"
+        )}
+      >
+        {isPast ? "✓" : step}
+      </div>
+
+      {/* Icon */}
+      <div
+        className={cn(
+          "mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-all duration-500",
+          isActive 
+            ? "bg-accent/20 animate-pulse" 
+            : isPast 
+            ? "bg-success/10" 
+            : "bg-primary/10"
+        )}
+      >
+        <Icon
+          className={cn(
+            "h-8 w-8 transition-all duration-300",
+            isActive 
+              ? "text-accent scale-110" 
+              : isPast 
+              ? "text-success" 
+              : "text-primary"
+          )}
+        />
+      </div>
+
+      {/* Content */}
+      <h3 className={cn(
+        "mb-2 font-semibold transition-colors duration-300",
+        isActive ? "text-accent" : "text-headline"
+      )}>
+        {title}
+      </h3>
+      <p className="text-sm text-muted-foreground">{description}</p>
+    </div>
+  );
+}
+
+export function HowItWorksSection() {
+  const [activeStep, setActiveStep] = useState(0);
+  
+  // Auto-advance through steps for visual effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % (steps.length + 1));
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="py-16 md:py-24 bg-background-muted overflow-hidden">
       <div className="container">
         <SectionHeading
           title="So funktioniert's"
@@ -53,17 +138,51 @@ export function HowItWorksSection() {
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
           {steps.map((step, index) => (
             <div key={step.step} className="relative">
-              <StepCard
+              <AnimatedStepCard
                 step={step.step}
                 icon={step.icon}
                 title={step.title}
                 description={step.description}
+                isActive={activeStep === index + 1}
+                isPast={activeStep > index + 1}
+                delay={index * 100}
               />
-              {/* Connector Line (hidden on last item and mobile) */}
+              {/* Animated Connector Line */}
               {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-0.5 bg-border" />
+                <div className="hidden lg:flex absolute top-1/2 -right-3 items-center">
+                  <div className={cn(
+                    "w-6 h-0.5 transition-all duration-500",
+                    activeStep > index + 1 ? "bg-success" : "bg-border"
+                  )} />
+                  <ChevronRight className={cn(
+                    "h-4 w-4 -ml-1 transition-all duration-500",
+                    activeStep > index + 1 
+                      ? "text-success" 
+                      : activeStep === index + 1 
+                      ? "text-accent animate-pulse" 
+                      : "text-muted-foreground"
+                  )} />
+                </div>
               )}
             </div>
+          ))}
+        </div>
+
+        {/* Progress Indicator */}
+        <div className="flex justify-center mt-8 gap-2">
+          {steps.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setActiveStep(index + 1)}
+              className={cn(
+                "w-2 h-2 rounded-full transition-all duration-300",
+                activeStep === index + 1
+                  ? "bg-accent w-6"
+                  : activeStep > index + 1
+                  ? "bg-success"
+                  : "bg-muted-foreground/30 hover:bg-muted-foreground/50"
+              )}
+            />
           ))}
         </div>
       </div>
