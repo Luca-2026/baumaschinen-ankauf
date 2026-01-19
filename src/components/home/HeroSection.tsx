@@ -5,8 +5,8 @@ import {
   Shield, 
   Building2,
   ArrowRight,
-  Shovel,
-  Construction
+  Tractor,
+  ChevronsUp
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TrustBadge } from "@/components/ui/TrustBadge";
@@ -27,11 +27,11 @@ export function HeroSection() {
       <div className="container relative">
         <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
           {/* Left Column - Content */}
-          <div className="max-w-xl">
+          <div className="max-w-xl animate-fade-in">
             <h1 className="text-4xl font-bold tracking-tight text-headline md:text-5xl lg:text-6xl">
-              Baumaschine verkaufen in NRW
+              Baumaschinen verkaufen war noch nie so einfach
               <span className="block text-primary mt-2">
-                – in wenigen Schritten zum Referenzpreis
+                In wenigen Schritten zum Ankaufspreis
               </span>
             </h1>
             <p className="mt-6 text-xl text-muted-foreground">
@@ -40,22 +40,27 @@ export function HeroSection() {
 
             {/* Trust Badges */}
             <div className="mt-8 grid grid-cols-2 gap-4">
-              {trustItems.map((item) => (
-                <TrustBadge
+              {trustItems.map((item, index) => (
+                <div 
                   key={item.title}
-                  icon={item.icon}
-                  title={item.title}
-                  variant="compact"
-                />
+                  className="animate-fade-in"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <TrustBadge
+                    icon={item.icon}
+                    title={item.title}
+                    variant="compact"
+                  />
+                </div>
               ))}
             </div>
 
             {/* CTA Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row gap-4">
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 animate-fade-in" style={{ animationDelay: '400ms' }}>
               <Button
                 asChild
                 size="lg"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold text-lg h-14 px-8"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold text-lg h-14 px-8 hover-scale"
               >
                 <Link to="/ankauf">
                   Jetzt Ankaufpreis starten
@@ -75,36 +80,38 @@ export function HeroSection() {
 
           {/* Right Column - Quick Start Cards */}
           <div className="flex flex-col gap-4">
-            <p className="text-center text-sm font-medium text-muted-foreground mb-2">
+            <p className="text-center text-sm font-medium text-muted-foreground mb-2 animate-fade-in">
               Was möchten Sie verkaufen?
             </p>
             <div className="grid gap-4 sm:grid-cols-2">
               <Link
                 to="/ankauf?kategorie=bagger"
-                className="group relative flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-card p-8 shadow-sm transition-all hover:border-primary hover:shadow-lg"
+                className="group relative flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1 animate-fade-in"
+                style={{ animationDelay: '200ms' }}
               >
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
-                  <Shovel className="h-10 w-10 text-primary" />
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
+                  <Tractor className="h-10 w-10 text-primary transition-transform duration-300 group-hover:scale-110" />
                 </div>
                 <span className="text-xl font-semibold text-headline">Bagger</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground text-center">
                   Mini, Midi, Ketten, Mobil & mehr
                 </span>
-                <ArrowRight className="absolute right-4 top-4 h-5 w-5 text-muted-foreground opacity-0 transition-all group-hover:opacity-100 group-hover:text-primary" />
+                <ArrowRight className="absolute right-4 top-4 h-5 w-5 text-muted-foreground opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:text-primary group-hover:translate-x-1" />
               </Link>
 
               <Link
                 to="/ankauf?kategorie=arbeitsbuehne"
-                className="group relative flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-card p-8 shadow-sm transition-all hover:border-primary hover:shadow-lg"
+                className="group relative flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1 animate-fade-in"
+                style={{ animationDelay: '300ms' }}
               >
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 transition-colors group-hover:bg-primary/20">
-                  <Construction className="h-10 w-10 text-primary" />
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
+                  <ChevronsUp className="h-10 w-10 text-primary transition-transform duration-300 group-hover:scale-110" />
                 </div>
                 <span className="text-xl font-semibold text-headline">Arbeitsbühne</span>
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm text-muted-foreground text-center">
                   Schere, Gelenk, Teleskop & mehr
                 </span>
-                <ArrowRight className="absolute right-4 top-4 h-5 w-5 text-muted-foreground opacity-0 transition-all group-hover:opacity-100 group-hover:text-primary" />
+                <ArrowRight className="absolute right-4 top-4 h-5 w-5 text-muted-foreground opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:text-primary group-hover:translate-x-1" />
               </Link>
             </div>
           </div>

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Check, Shovel, Construction } from "lucide-react";
+import { Check, Tractor, ChevronsUp } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { cn } from "@/lib/utils";
 
 const categories = {
   bagger: {
-    icon: Shovel,
+    icon: Tractor,
     title: "Bagger",
     types: [
       "Minibagger (bis 6t)",
@@ -24,7 +24,7 @@ const categories = {
     ],
   },
   arbeitsbuehnen: {
-    icon: Construction,
+    icon: ChevronsUp,
     title: "Arbeitsbühnen",
     types: [
       "Scherenarbeitsbühnen",
@@ -63,25 +63,25 @@ export function MachineCategoriesSection() {
             <button
               onClick={() => setActiveTab("bagger")}
               className={cn(
-                "flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all",
+                "flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all duration-300",
                 activeTab === "bagger"
                   ? "bg-card text-headline shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <Shovel className="h-4 w-4" />
+              <Tractor className="h-4 w-4" />
               Bagger
             </button>
             <button
               onClick={() => setActiveTab("arbeitsbuehnen")}
               className={cn(
-                "flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all",
+                "flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all duration-300",
                 activeTab === "arbeitsbuehnen"
                   ? "bg-card text-headline shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
               )}
             >
-              <Construction className="h-4 w-4" />
+              <ChevronsUp className="h-4 w-4" />
               Arbeitsbühnen
             </button>
           </div>
