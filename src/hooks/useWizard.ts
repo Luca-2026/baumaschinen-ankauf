@@ -54,7 +54,7 @@ export function useWizard() {
     }
   }, [formData.manufacturerId]);
 
-  const fetchManufacturers = async (category: string) => {
+  const fetchManufacturers = async (category: 'bagger' | 'arbeitsbuehne') => {
     try {
       const { data, error } = await supabase
         .from("manufacturers")
