@@ -15,12 +15,13 @@ const loginSchema = z.object({
 
 const AdminLogin = () => {
   const navigate = useNavigate();
-  const { signIn, isLoading: authLoading, user, isAdmin } = useAuth();
+  const { signIn, signUp, isLoading: authLoading, user, isAdmin } = useAuth();
   const { toast } = useToast();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isRegisterMode, setIsRegisterMode] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
 
   // Redirect if already logged in as admin
@@ -48,22 +49,42 @@ const AdminLogin = () => {
     setIsLoading(true);
 
     try {
-      const { error } = await signIn(email, password);
+      if (isRegisterMode) {
+        const { error } = await signUp(email, password);
 
-      if (error) {
-        toast({
-          title: "Anmeldung fehlgeschlagen",
-          description: error.message === "Invalid login credentials" 
-            ? "E-Mail oder Passwort ist falsch" 
-            : error.message,
-          variant: "destructive",
-        });
+        if (error) {
+          toast({
+            title: "Registrierung fehlgeschlagen",
+            description: error.message === "User already registered"
+              ? "Diese E-Mail ist bereits registriert"
+              : error.message,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Erfolgreich registriert",
+            description: "Bitte prüfen Sie Ihre E-Mail für die Bestätigung oder melden Sie sich direkt an.",
+          });
+          setIsRegisterMode(false);
+        }
       } else {
-        toast({
-          title: "Erfolgreich angemeldet",
-          description: "Willkommen im Admin-Bereich",
-        });
-        navigate("/admin");
+        const { error } = await signIn(email, password);
+
+        if (error) {
+          toast({
+            title: "Anmeldung fehlgeschlagen",
+            description: error.message === "Invalid login credentials" 
+              ? "E-Mail oder Passwort ist falsch" 
+              : error.message,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Erfolgreich angemeldet",
+            description: "Willkommen im Admin-Bereich",
+          });
+          navigate("/admin");
+        }
       }
     } catch (error: any) {
       toast({
@@ -87,9 +108,13 @@ const AdminLogin = () => {
                 <Lock className="h-8 w-8 text-primary" />
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-headline">Admin-Anmeldung</h1>
+            <h1 className="text-2xl font-bold text-headline">
+              {isRegisterMode ? "Admin-Registrierung" : "Admin-Anmeldung"}
+            </h1>
             <p className="text-muted-foreground mt-2">
-              Melden Sie sich an, um auf den Admin-Bereich zuzugreifen
+              {isRegisterMode 
+                ? "Erstellen Sie ein neues Admin-Konto" 
+                : "Melden Sie sich an, um auf den Admin-Bereich zuzugreifen"}
             </p>
           </div>
 
@@ -147,12 +172,24 @@ const AdminLogin = () => {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Anmelden...
+                  {isRegisterMode ? "Registrieren..." : "Anmelden..."}
                 </>
               ) : (
-                "Anmelden"
+                isRegisterMode ? "Registrieren" : "Anmelden"
               )}
             </Button>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setIsRegisterMode(!isRegisterMode)}
+                className="text-sm text-primary hover:underline"
+              >
+                {isRegisterMode 
+                  ? "Bereits registriert? Anmelden" 
+                  : "Noch kein Konto? Registrieren"}
+              </button>
+            </div>
           </form>
 
           {/* Back Link */}
