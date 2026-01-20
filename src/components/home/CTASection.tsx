@@ -28,7 +28,7 @@ export function CTASection() {
               asChild
               variant="outline"
               size="lg"
-              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 h-14 px-8"
+              className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-primary h-14 px-8 font-semibold"
             >
               <Link to="/kontakt">Kontakt aufnehmen</Link>
             </Button>
