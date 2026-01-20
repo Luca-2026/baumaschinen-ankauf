@@ -182,21 +182,20 @@ export default function Finanzierung() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-primary text-primary-foreground">
+      <section className="py-16 md:py-24 bg-primary text-primary-foreground">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold mb-4">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl text-white">
               Interesse an einer Finanzierung?
             </h2>
-            <p className="text-xl opacity-90 mb-8">
-              Kontaktieren Sie uns für ein unverbindliches Angebot – 
-              wir beraten Sie gerne persönlich.
+            <p className="mt-6 text-lg text-primary-foreground/80">
+              Kontaktieren Sie uns für ein unverbindliches Angebot – wir beraten Sie gerne persönlich.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Button
                 asChild
                 size="lg"
-                className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold h-14 px-8"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold text-lg h-14 px-8"
               >
                 <a href="tel:+492151XXXXXX">
                   <Phone className="mr-2 h-5 w-5" />
@@ -207,7 +206,7 @@ export default function Finanzierung() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-primary h-14 px-8"
+                className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-primary h-14 px-8 font-semibold"
               >
                 <Link to="/kontakt">
                   <Mail className="mr-2 h-5 w-5" />

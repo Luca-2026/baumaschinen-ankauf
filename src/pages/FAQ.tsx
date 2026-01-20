@@ -142,23 +142,32 @@ export default function FAQ() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-muted">
+      <section className="py-16 md:py-24 bg-primary text-primary-foreground">
         <div className="container">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl font-bold text-headline mb-4">
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl text-white">
               Noch Fragen?
             </h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="mt-6 text-lg text-primary-foreground/80">
               Unser Team steht Ihnen gerne für weitere Fragen zur Verfügung.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="h-12">
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <Button
+                asChild
+                size="lg"
+                className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold text-lg h-14 px-8"
+              >
                 <Link to="/kontakt">
                   Kontakt aufnehmen
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="h-12 bg-white">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-primary h-14 px-8 font-semibold"
+              >
                 <a href="tel:+492151XXXXXX">
                   <Phone className="mr-2 h-5 w-5" />
                   Anrufen
