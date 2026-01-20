@@ -83,7 +83,7 @@ export function SubmissionSuccess({ priceRange, manufacturerName, modelName }: S
           </Link>
         </Button>
         <Button asChild variant="outline" size="lg">
-          <a href="tel:+492151999999">
+          <a href="tel:+4921514179904">
             <Phone className="mr-2 h-5 w-5" />
             Jetzt anrufen
           </a>

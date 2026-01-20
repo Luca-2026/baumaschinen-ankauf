@@ -1,16 +1,38 @@
 import { useState, useMemo } from "react";
-import { Search, AlertCircle, ChevronDown } from "lucide-react";
+import { Search, AlertCircle, ChevronDown, Fuel, Zap, Leaf } from "lucide-react";
 import { WizardFormData } from "@/types/wizard";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { getManufacturersForCategory, getModelsForManufacturer, MachineModel } from "@/data/machineData";
+import { 
+  getManufacturersForCategory, 
+  getModelsForManufacturer, 
+  MachineModel,
+  ArbeitsbuehnModel,
+  ArbeitsbuehneDriveType
+} from "@/data/machineData";
+import { getAvailableDriveTypes } from "@/data/arbeitsbuehneData";
 
 interface Step2ManufacturerProps {
   formData: WizardFormData;
   updateFormData: (updates: Partial<WizardFormData>) => void;
 }
+
+// Type guards
+function isBaggerModel(model: MachineModel | ArbeitsbuehnModel): model is MachineModel {
+  return 'tonnage_t' in model && 'type' in model;
+}
+
+function isArbeitsbuehneModel(model: MachineModel | ArbeitsbuehnModel): model is ArbeitsbuehnModel {
+  return 'workingHeightM' in model && 'driveType' in model;
+}
+
+const driveTypeLabels: Record<ArbeitsbuehneDriveType, { label: string; icon: typeof Fuel }> = {
+  diesel: { label: "Diesel", icon: Fuel },
+  electric: { label: "Elektro", icon: Zap },
+  hybrid: { label: "Hybrid", icon: Leaf },
+};
 
 export function Step2Manufacturer({
   formData,
@@ -19,18 +41,25 @@ export function Step2Manufacturer({
   const [manufacturerSearch, setManufacturerSearch] = useState("");
   const [modelSearch, setModelSearch] = useState("");
   const [showAllManufacturers, setShowAllManufacturers] = useState(false);
+  const [selectedDriveType, setSelectedDriveType] = useState<ArbeitsbuehneDriveType | undefined>(undefined);
+
+  // Get available drive types for arbeitsbuehne
+  const availableDriveTypes = useMemo(() => {
+    if (formData.category !== "arbeitsbuehne") return [];
+    return getAvailableDriveTypes(formData.subcategory, formData.manufacturerName || undefined);
+  }, [formData.category, formData.subcategory, formData.manufacturerName]);
 
   // Get manufacturers from static data
   const manufacturers = useMemo(() => {
     if (!formData.category) return [];
-    return getManufacturersForCategory(formData.category, formData.subcategory);
-  }, [formData.category, formData.subcategory]);
+    return getManufacturersForCategory(formData.category, formData.subcategory, selectedDriveType);
+  }, [formData.category, formData.subcategory, selectedDriveType]);
 
   // Get models from static data
   const models = useMemo(() => {
     if (!formData.category || !formData.manufacturerName) return [];
-    return getModelsForManufacturer(formData.category, formData.manufacturerName, formData.subcategory);
-  }, [formData.category, formData.manufacturerName, formData.subcategory]);
+    return getModelsForManufacturer(formData.category, formData.manufacturerName, formData.subcategory, selectedDriveType);
+  }, [formData.category, formData.manufacturerName, formData.subcategory, selectedDriveType]);
 
   const filteredManufacturers = manufacturers.filter((m) =>
     m.toLowerCase().includes(manufacturerSearch.toLowerCase())
@@ -45,6 +74,19 @@ export function Step2Manufacturer({
     ? filteredManufacturers 
     : filteredManufacturers.slice(0, 8);
 
+  const handleDriveTypeSelect = (driveType: ArbeitsbuehneDriveType | undefined) => {
+    setSelectedDriveType(driveType);
+    // Reset manufacturer and model when changing drive type
+    if (driveType !== selectedDriveType) {
+      updateFormData({
+        manufacturerId: "",
+        manufacturerName: "",
+        modelId: "",
+        modelName: "",
+      });
+    }
+  };
+
   const handleManufacturerSelect = (manufacturer: string) => {
     updateFormData({
       manufacturerId: manufacturer, // Use name as ID for static data
@@ -57,15 +99,27 @@ export function Step2Manufacturer({
     setModelSearch("");
   };
 
-  const handleModelSelect = (model: MachineModel) => {
-    updateFormData({
-      modelId: `${model.manufacturer}-${model.model}`,
-      modelName: model.model,
-      isCustomModel: false,
-      customModelName: "",
-      // Auto-set drive type based on undercarriage
-      driveType: model.type === "Mobil" ? "mobil" : "kette",
-    });
+  const handleModelSelect = (model: MachineModel | ArbeitsbuehnModel) => {
+    if (isBaggerModel(model)) {
+      updateFormData({
+        modelId: `${model.manufacturer}-${model.model}`,
+        modelName: model.model,
+        isCustomModel: false,
+        customModelName: "",
+        // Auto-set drive type based on undercarriage
+        driveType: model.type === "Mobil" ? "mobil" : "kette",
+      });
+    } else if (isArbeitsbuehneModel(model)) {
+      updateFormData({
+        modelId: `${model.manufacturer}-${model.model}`,
+        modelName: model.model,
+        isCustomModel: false,
+        customModelName: "",
+        // Auto-set drive type and working height
+        driveType: model.driveType,
+        workingHeight: `${model.workingHeightM}m`,
+      });
+    }
   };
 
   const handleCustomModelToggle = (checked: boolean) => {
@@ -86,6 +140,47 @@ export function Step2Manufacturer({
           Wählen Sie den Hersteller und das Modell Ihrer Maschine
         </p>
       </div>
+
+      {/* Drive Type Filter for Arbeitsbühne */}
+      {formData.category === "arbeitsbuehne" && availableDriveTypes.length > 0 && (
+        <div className="animate-fade-in">
+          <Label className="text-base font-medium mb-3 block">Antriebsart (optional)</Label>
+          <div className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => handleDriveTypeSelect(undefined)}
+              className={cn(
+                "px-4 py-2 rounded-lg border text-sm font-medium transition-all",
+                !selectedDriveType
+                  ? "border-primary bg-primary text-primary-foreground"
+                  : "border-border bg-card hover:border-primary hover:bg-primary/5"
+              )}
+            >
+              Alle
+            </button>
+            {availableDriveTypes.map((dt) => {
+              const config = driveTypeLabels[dt];
+              const Icon = config.icon;
+              return (
+                <button
+                  key={dt}
+                  type="button"
+                  onClick={() => handleDriveTypeSelect(dt)}
+                  className={cn(
+                    "px-4 py-2 rounded-lg border text-sm font-medium transition-all flex items-center gap-2",
+                    selectedDriveType === dt
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border bg-card hover:border-primary hover:bg-primary/5"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  {config.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Manufacturer Selection */}
       <div>
@@ -155,29 +250,42 @@ export function Step2Manufacturer({
               
               {filteredModels.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-1 mb-4">
-                  {filteredModels.map((model) => (
-                    <button
-                      key={`${model.manufacturer}-${model.model}`}
-                      type="button"
-                      onClick={() => handleModelSelect(model)}
-                      className={cn(
-                        "px-3 py-3 rounded-lg border text-sm font-medium transition-all text-left",
-                        formData.modelName === model.model
-                          ? "border-primary bg-primary text-primary-foreground"
-                          : "border-border bg-card hover:border-primary hover:bg-primary/5"
-                      )}
-                    >
-                      <div className="font-medium">{model.model}</div>
-                      <div className={cn(
-                        "text-xs mt-1",
-                        formData.modelName === model.model
-                          ? "text-primary-foreground/80"
-                          : "text-muted-foreground"
-                      )}>
-                        {model.tonnage_t}t • {model.type}
-                      </div>
-                    </button>
-                  ))}
+                  {filteredModels.map((model) => {
+                    const isBagger = isBaggerModel(model);
+                    const isArbeitsbuehne = isArbeitsbuehneModel(model);
+                    
+                    return (
+                      <button
+                        key={`${model.manufacturer}-${model.model}`}
+                        type="button"
+                        onClick={() => handleModelSelect(model)}
+                        className={cn(
+                          "px-3 py-3 rounded-lg border text-sm font-medium transition-all text-left",
+                          formData.modelName === model.model
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border bg-card hover:border-primary hover:bg-primary/5"
+                        )}
+                      >
+                        <div className="font-medium">{model.model}</div>
+                        <div className={cn(
+                          "text-xs mt-1 flex items-center gap-1",
+                          formData.modelName === model.model
+                            ? "text-primary-foreground/80"
+                            : "text-muted-foreground"
+                        )}>
+                          {isBagger && (
+                            <>{model.tonnage_t}t • {model.type}</>
+                          )}
+                          {isArbeitsbuehne && (
+                            <>
+                              {model.workingHeightM}m • 
+                              {driveTypeLabels[model.driveType]?.label || model.driveType}
+                            </>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="bg-muted/50 rounded-lg p-4 mb-4">
