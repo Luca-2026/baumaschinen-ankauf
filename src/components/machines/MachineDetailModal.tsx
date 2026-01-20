@@ -15,9 +15,9 @@ import {
   Mail, 
   ChevronLeft, 
   ChevronRight,
-  X,
   Weight,
-  CheckCircle2
+  CheckCircle2,
+  ShieldCheck
 } from "lucide-react";
 import { MachineIcon } from "@/components/ui/MachineIcon";
 import { cn } from "@/lib/utils";
@@ -222,10 +222,14 @@ export function MachineDetailModal({ machine, isOpen, onClose }: MachineDetailMo
             </div>
           </div>
 
-          {/* Condition Badge */}
-          <div className="mb-6">
+          {/* Condition Badge & Warranty */}
+          <div className="mb-6 flex flex-wrap gap-3">
             <Badge className="bg-success/20 text-success border-0">
               Zustand: {conditionLabels[machine.condition] || machine.condition}
+            </Badge>
+            <Badge className="bg-success text-white border-0 flex items-center gap-1">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              1 Jahr Gewährleistung
             </Badge>
           </div>
 

@@ -62,7 +62,7 @@ export function UsedMachinesTeaser() {
       <div className="container">
         <SectionHeading
           title="Gebrauchtmaschinen-Angebote"
-          subtitle="Geprüfte Qualität zu fairen Preisen – alle Maschinen sind vor Übergabe vollständig gewartet."
+          subtitle="Geprüfte Qualität zu fairen Preisen – alle Maschinen mit 1 Jahr Gewährleistung."
         />
 
         {loading ? (
