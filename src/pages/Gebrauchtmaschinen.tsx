@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { Layout } from "@/components/layout/Layout";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { MachineIcon } from "@/components/ui/MachineIcon";
+import { MachineImageSlider } from "@/components/machines/MachineImageSlider";
+import { MachineDetailModal } from "@/components/machines/MachineDetailModal";
 import { 
   Calendar, 
   Gauge, 
   MapPin, 
   Phone,
   Mail,
-  ArrowRight
+  ArrowRight,
+  Expand
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -23,6 +25,7 @@ interface Machine {
   category: "bagger" | "arbeitsbuehne";
   year_built: number;
   operating_hours: number | null;
+  weight_kg: number | null;
   price: number;
   condition: string;
   location_name: string | null;
@@ -30,6 +33,8 @@ interface Machine {
   is_featured: boolean | null;
   is_sold: boolean | null;
   description: string | null;
+  features: string[] | null;
+  financing_available: boolean | null;
 }
 
 const conditionLabels: Record<string, string> = {
@@ -43,6 +48,8 @@ export default function Gebrauchtmaschinen() {
   const [machines, setMachines] = useState<Machine[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "bagger" | "arbeitsbuehne">("all");
+  const [selectedMachine, setSelectedMachine] = useState<Machine | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchMachines() {
@@ -55,7 +62,12 @@ export default function Gebrauchtmaschinen() {
         .order("created_at", { ascending: false });
 
       if (!error && data) {
-        setMachines(data as Machine[]);
+        // Parse features if it's a string
+        const parsedData = data.map(m => ({
+          ...m,
+          features: typeof m.features === 'string' ? JSON.parse(m.features) : m.features
+        }));
+        setMachines(parsedData as Machine[]);
       }
       setLoading(false);
     }
@@ -73,6 +85,16 @@ export default function Gebrauchtmaschinen() {
       currency: "EUR",
       maximumFractionDigits: 0
     }).format(price);
+  };
+
+  const openMachineDetail = (machine: Machine) => {
+    setSelectedMachine(machine);
+    setIsModalOpen(true);
+  };
+
+  const closeMachineDetail = () => {
+    setIsModalOpen(false);
+    setSelectedMachine(null);
   };
 
   return (
@@ -163,36 +185,34 @@ export default function Gebrauchtmaschinen() {
               {filteredMachines.map((machine) => (
                 <div
                   key={machine.id}
-                  className="group rounded-2xl border bg-card overflow-hidden shadow-sm hover:shadow-lg transition-all"
+                  className="group rounded-2xl border bg-card overflow-hidden shadow-sm hover:shadow-lg transition-all cursor-pointer"
+                  onClick={() => openMachineDetail(machine)}
                 >
-                  {/* Image */}
-                  <div className="relative aspect-[4/3] bg-muted">
-                    {machine.images && machine.images.length > 0 ? (
-                      <img
-                        src={machine.images[0]}
-                        alt={machine.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <MachineIcon 
-                          type={machine.category} 
-                          size="2xl" 
-                          className="opacity-20" 
-                        />
-                      </div>
-                    )}
+                  {/* Image Slider */}
+                  <div className="relative">
+                    <MachineImageSlider
+                      images={machine.images}
+                      title={machine.title}
+                      category={machine.category}
+                      autoPlay={true}
+                      autoPlayInterval={5000}
+                    />
                     {machine.is_featured && (
-                      <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground">
+                      <Badge className="absolute top-3 left-3 bg-accent text-accent-foreground z-10">
                         Empfohlen
                       </Badge>
                     )}
+                    {/* Expand hint */}
+                    <div className="absolute bottom-3 right-3 bg-black/50 text-white text-xs px-2 py-1 rounded-full flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                      <Expand className="h-3 w-3" />
+                      Details ansehen
+                    </div>
                   </div>
 
                   {/* Content */}
                   <div className="p-6">
                     <div className="flex items-start justify-between gap-2 mb-3">
-                      <h3 className="text-lg font-semibold text-headline line-clamp-2">
+                      <h3 className="text-lg font-semibold text-headline line-clamp-2 group-hover:text-primary transition-colors">
                         {machine.title}
                       </h3>
                     </div>
@@ -231,13 +251,17 @@ export default function Gebrauchtmaschinen() {
                         <p className="text-2xl font-bold text-primary">
                           {formatPrice(machine.price)}
                         </p>
-                        <p className="text-xs text-muted-foreground">zzgl. MwSt.</p>
+                        <p className="text-xs text-muted-foreground">inkl. MwSt.</p>
                       </div>
-                      <Button asChild size="sm">
-                        <Link to="/kontakt">
-                          Anfragen
-                          <ArrowRight className="ml-1 h-4 w-4" />
-                        </Link>
+                      <Button 
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openMachineDetail(machine);
+                        }}
+                      >
+                        Details
+                        <ArrowRight className="ml-1 h-4 w-4" />
                       </Button>
                     </div>
                   </div>
@@ -264,7 +288,7 @@ export default function Gebrauchtmaschinen() {
                 size="lg"
                 className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold text-lg h-14 px-8"
               >
-                <a href="tel:+492151XXXXXX">
+                <a href="tel:+4921514179904">
                   <Phone className="mr-2 h-5 w-5" />
                   Jetzt anrufen
                 </a>
@@ -275,7 +299,7 @@ export default function Gebrauchtmaschinen() {
                 size="lg"
                 className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-primary h-14 px-8 font-semibold"
               >
-                <a href="mailto:info@slt-baumaschinen.de">
+                <a href="mailto:info@wirkaufendeinebaumaschinen.de">
                   <Mail className="mr-2 h-5 w-5" />
                   E-Mail schreiben
                 </a>
@@ -284,6 +308,13 @@ export default function Gebrauchtmaschinen() {
           </div>
         </div>
       </section>
+
+      {/* Machine Detail Modal */}
+      <MachineDetailModal
+        machine={selectedMachine}
+        isOpen={isModalOpen}
+        onClose={closeMachineDetail}
+      />
     </Layout>
   );
 }
