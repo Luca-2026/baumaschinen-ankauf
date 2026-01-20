@@ -2,6 +2,23 @@
 // Last updated: 2026-01-20
 // Prices are market reference values (Neupreis = new price, Gebrauchtpreis = used price range)
 
+import { 
+  arbeitsbuehneSubtypes, 
+  getArbeitsbuehneManufacturers, 
+  getArbeitsbuehneModelsForManufacturer,
+  findArbeitsbuehneModel,
+  ArbeitsbuehnModel,
+  ArbeitsbuehneDriveType
+} from "./arbeitsbuehneData";
+
+export type { ArbeitsbuehnModel, ArbeitsbuehneDriveType };
+export { 
+  arbeitsbuehneSubtypes, 
+  getArbeitsbuehneManufacturers, 
+  getArbeitsbuehneModelsForManufacturer,
+  findArbeitsbuehneModel 
+};
+
 export interface MachineModel {
   manufacturer: string;
   model: string;
@@ -202,7 +219,7 @@ export const baggerSubtypes: MachineSubtype[] = [
 ];
 
 // Helper function to get all unique manufacturers for a category
-export function getManufacturersForCategory(category: "bagger" | "arbeitsbuehne", subcategory?: string): string[] {
+export function getManufacturersForCategory(category: "bagger" | "arbeitsbuehne", subcategory?: string, driveType?: ArbeitsbuehneDriveType): string[] {
   if (category === "bagger") {
     let models: MachineModel[] = [];
     
@@ -217,7 +234,10 @@ export function getManufacturersForCategory(category: "bagger" | "arbeitsbuehne"
     return manufacturers.sort();
   }
   
-  // TODO: Add arbeitsbuehne data
+  if (category === "arbeitsbuehne") {
+    return getArbeitsbuehneManufacturers(subcategory, driveType);
+  }
+  
   return [];
 }
 
@@ -225,8 +245,9 @@ export function getManufacturersForCategory(category: "bagger" | "arbeitsbuehne"
 export function getModelsForManufacturer(
   category: "bagger" | "arbeitsbuehne",
   manufacturer: string,
-  subcategory?: string
-): MachineModel[] {
+  subcategory?: string,
+  driveType?: ArbeitsbuehneDriveType
+): MachineModel[] | ArbeitsbuehnModel[] {
   if (category === "bagger") {
     let allModels: MachineModel[] = [];
     
@@ -240,7 +261,10 @@ export function getModelsForManufacturer(
     return allModels.filter(m => m.manufacturer === manufacturer);
   }
   
-  // TODO: Add arbeitsbuehne data
+  if (category === "arbeitsbuehne") {
+    return getArbeitsbuehneModelsForManufacturer(manufacturer, subcategory, driveType);
+  }
+  
   return [];
 }
 
@@ -249,7 +273,7 @@ export function findMachineModel(
   category: "bagger" | "arbeitsbuehne",
   manufacturer: string,
   modelName: string
-): MachineModel | null {
+): MachineModel | ArbeitsbuehnModel | null {
   if (category === "bagger") {
     for (const subtype of baggerSubtypes) {
       const model = subtype.models.find(
@@ -258,6 +282,11 @@ export function findMachineModel(
       if (model) return model;
     }
   }
+  
+  if (category === "arbeitsbuehne") {
+    return findArbeitsbuehneModel(manufacturer, modelName);
+  }
+  
   return null;
 }
 
@@ -270,14 +299,12 @@ export function getSubcategoriesForCategory(category: "bagger" | "arbeitsbuehne"
     }));
   }
   
-  // Return existing arbeitsbuehne subcategories
-  return [
-    { value: 'schere', label: 'Scherenarbeitsbühne' },
-    { value: 'gelenk', label: 'Gelenkteleskopbühne' },
-    { value: 'teleskop', label: 'Teleskoparbeitsbühne' },
-    { value: 'mast', label: 'Mastbühne' },
-    { value: 'raupen', label: 'Raupenarbeitsbühne' },
-    { value: 'lkw', label: 'LKW-Arbeitsbühne' },
-    { value: 'anhaenger', label: 'Anhänger-Arbeitsbühne' },
-  ];
+  if (category === "arbeitsbuehne") {
+    return arbeitsbuehneSubtypes.map(s => ({
+      value: s.value,
+      label: s.name
+    }));
+  }
+  
+  return [];
 }
