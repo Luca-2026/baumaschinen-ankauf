@@ -102,8 +102,6 @@ const Ankauf = () => {
                     <Step2Manufacturer
                       formData={formData}
                       updateFormData={updateFormData}
-                      manufacturers={manufacturers}
-                      models={models}
                     />
                   )}
                   {currentStep === 3 && (
