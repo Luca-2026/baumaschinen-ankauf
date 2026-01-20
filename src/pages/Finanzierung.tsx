@@ -197,7 +197,7 @@ export default function Finanzierung() {
                 size="lg"
                 className="bg-accent hover:bg-accent/90 text-accent-foreground font-semibold text-lg h-14 px-8"
               >
-                <a href="tel:+492151XXXXXX">
+              <a href="tel:+4921514179904">
                   <Phone className="mr-2 h-5 w-5" />
                   Jetzt anrufen
                 </a>

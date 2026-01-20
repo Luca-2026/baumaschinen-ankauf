@@ -40,7 +40,7 @@ const locations = [
     city: "Mülheim an der Ruhr",
     address: "Ruhrorter Str. 122",
     zip: "45478 Mülheim an der Ruhr",
-    phone: "+49 208 XXXXXX",
+    phone: "+49 2151 417 990 4",
     email: "muelheim@wirkaufendeinebaumaschinen.de",
     hours: "Mo-Fr: 08:00 - 17:00 Uhr",
     description: "Ihr Ansprechpartner im Ruhrgebiet.",

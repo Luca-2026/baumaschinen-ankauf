@@ -81,8 +81,8 @@ export default function Datenschutz() {
                 Anrather Straße 291<br />
                 47803 Krefeld<br />
                 <br />
-                Telefon: +49 2151 XXXXXX<br />
-                E-Mail: info@slt-baumaschinen.de
+                Telefon: +49 2151 417 990 4<br />
+                E-Mail: info@wirkaufendeinebaumaschinen.de
               </p>
 
               <h3 className="text-xl font-semibold text-headline mt-6 mb-3">

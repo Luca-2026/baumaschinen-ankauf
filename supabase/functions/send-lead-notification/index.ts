@@ -169,7 +169,7 @@ const handler = async (req: Request): Promise<Response> => {
               <li>Bei Einigung erfolgt die schnelle Abwicklung und Auszahlung.</li>
             </ol>
             
-            <p>Bei Fragen erreichen Sie uns telefonisch unter <a href="tel:+492151999999">02151 999999</a>.</p>
+            <p>Bei Fragen erreichen Sie uns telefonisch unter <a href="tel:+4921514179904">02151 417 990 4</a>.</p>
             
             <p>Mit freundlichen Grüßen,<br>
             Ihr Team von wirkaufendeinebaumaschinen.de</p>

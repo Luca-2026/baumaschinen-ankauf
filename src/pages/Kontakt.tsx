@@ -20,15 +20,15 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Telefon",
-    value: "+49 2151 XXXXXX",
-    link: "tel:+492151XXXXXX",
+    value: "02151 417 990 4",
+    link: "tel:+4921514179904",
     description: "Mo-Fr 08:00 - 17:00 Uhr"
   },
   {
     icon: Mail,
     title: "E-Mail",
-    value: "info@slt-baumaschinen.de",
-    link: "mailto:info@slt-baumaschinen.de",
+    value: "info@wirkaufendeinebaumaschinen.de",
+    link: "mailto:info@wirkaufendeinebaumaschinen.de",
     description: "Antwort innerhalb 24h"
   },
   {
