@@ -49,11 +49,21 @@ export function useWizard() {
 
   // Fetch models when manufacturer changes
   useEffect(() => {
-    if (formData.manufacturerId) {
+    // NOTE: Some wizard steps use static manufacturer names as IDs.
+    // Our DB models table expects a UUID manufacturer_id, so we only fetch
+    // when the manufacturerId looks like a UUID.
+    const isUuid =
+      typeof formData.manufacturerId === "string" &&
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(
+        formData.manufacturerId
+      );
+
+    if (isUuid) {
       fetchModels(formData.manufacturerId);
-    } else {
-      setModels([]);
+      return;
     }
+
+    setModels([]);
   }, [formData.manufacturerId]);
 
   // Calculate price when relevant data changes
@@ -190,8 +200,11 @@ export function useWizard() {
         documentUrls = await uploadFiles(formData.documents, "documents");
       }
       
-      // Create lead
+      // Create lead (avoid SELECT/RETURNING to keep PII protected by RLS)
+      const newLeadId = crypto.randomUUID();
+
       const leadPayload = {
+        id: newLeadId,
         contact_name: formData.contactName,
         contact_email: formData.contactEmail,
         contact_phone: formData.contactPhone,
@@ -224,21 +237,21 @@ export function useWizard() {
         wants_pickup: formData.wantsPickup,
       };
 
-      const { data: lead, error: leadError } = await supabase
+      // IMPORTANT: Don't request the inserted row back (no `.select()`),
+      // otherwise we'd need a public SELECT policy on leads.
+      const { error: leadError } = await supabase
         .from("leads")
-        .insert(leadPayload)
-        .select()
-        .single();
+        .insert(leadPayload);
       
       if (leadError) throw leadError;
       
-      setLeadId(lead.id);
+      setLeadId(newLeadId);
       
       // Send notification email
       try {
         await supabase.functions.invoke("send-lead-notification", {
           body: {
-            leadId: lead.id,
+            leadId: newLeadId,
             contactName: formData.contactName,
             contactEmail: formData.contactEmail,
             contactPhone: formData.contactPhone,
