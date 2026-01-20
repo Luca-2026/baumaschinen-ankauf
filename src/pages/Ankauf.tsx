@@ -9,9 +9,8 @@ import { Step6Contact } from "@/components/wizard/steps/Step6Contact";
 import { SubmissionSuccess } from "@/components/wizard/SubmissionSuccess";
 import { useWizard } from "@/hooks/useWizard";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, ArrowRight, Loader2, Calculator, Info, ChevronDown, ChevronUp } from "lucide-react";
-import { formatPriceRange } from "@/lib/priceCalculation";
-import { useState } from "react";
+import { ArrowLeft, ArrowRight, Loader2, Calculator } from "lucide-react";
+import { validateEmail, validatePhone } from "@/lib/emailValidation";
 import { cn } from "@/lib/utils";
 
 const Ankauf = () => {
@@ -31,7 +30,7 @@ const Ankauf = () => {
     submitLead,
   } = useWizard();
 
-  const [showPriceExplanation, setShowPriceExplanation] = useState(false);
+  // Price explanation state removed - price only shown after submission
 
   // Validation for each step
   const isStep1Valid = formData.category !== "";
@@ -39,7 +38,15 @@ const Ankauf = () => {
   const isStep3Valid = formData.yearBuilt !== null && formData.locationZip.length === 5;
   const isStep4Valid = formData.condition !== "";
   const isStep5Valid = true; // Media is optional
-  const isStep6Valid = formData.contactName !== "" && formData.contactEmail !== "" && formData.contactPhone !== "" && formData.gdprConsent;
+  
+  // Step 6: Full validation including email and phone verification
+  const emailValidation = validateEmail(formData.contactEmail);
+  const phoneValidation = validatePhone(formData.contactPhone);
+  const isStep6Valid = 
+    formData.contactName.trim() !== "" && 
+    emailValidation.isValid && 
+    phoneValidation.isValid && 
+    formData.gdprConsent;
 
   const canProceed = () => {
     switch (currentStep) {
@@ -177,102 +184,23 @@ const Ankauf = () => {
             {/* Sidebar - Price Preview */}
             <div className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
-                {/* Price Card - Only show after contact data is complete */}
+                {/* Price Card - Only shown AFTER successful submission in SubmissionSuccess component */}
                 <div className="bg-card rounded-2xl shadow-lg p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Calculator className="h-5 w-5 text-primary" />
                     <h3 className="font-semibold text-headline">Referenzpreis</h3>
                   </div>
 
-                  {/* Only show price if contact data is complete and valid */}
-                  {currentStep === 6 && isStep6Valid ? (
-                    isPriceLoading ? (
-                      <div className="bg-muted/50 rounded-xl p-4 mb-4 animate-pulse">
-                        <div className="h-4 bg-muted rounded w-1/2 mb-2"></div>
-                        <div className="h-8 bg-muted rounded w-3/4"></div>
-                      </div>
-                    ) : priceRange ? (
-                      <>
-                        <div className="bg-accent/10 rounded-xl p-4 mb-4">
-                          <div className="flex items-center gap-2 mb-1">
-                            <p className="text-sm text-muted-foreground">
-                              {priceRange.isMarketBased 
-                                ? "Marktdaten-basierte Schätzung:"
-                                : "Vorläufige Schätzung:"}
-                            </p>
-                            {priceRange.isMarketBased && (
-                              <span className="text-xs bg-success/20 text-success px-2 py-0.5 rounded-full">
-                                Marktdaten
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-2xl md:text-3xl font-bold text-accent">
-                            {formatPriceRange(priceRange)}
-                          </p>
-                          {priceRange.matchedModel && (
-                            <p className="text-xs text-muted-foreground mt-2">
-                              Basierend auf: {priceRange.matchedModel}
-                            </p>
-                          )}
-                        </div>
-
-                        {/* How it's calculated */}
-                        <button
-                          onClick={() => setShowPriceExplanation(!showPriceExplanation)}
-                          className="flex items-center justify-between w-full text-sm text-primary hover:underline"
-                        >
-                          <span className="flex items-center gap-1">
-                            <Info className="h-4 w-4" />
-                            Wie wird das berechnet?
-                          </span>
-                          {showPriceExplanation ? (
-                            <ChevronUp className="h-4 w-4" />
-                          ) : (
-                            <ChevronDown className="h-4 w-4" />
-                          )}
-                        </button>
-
-                        {showPriceExplanation && (
-                          <div className="mt-4 text-sm text-muted-foreground bg-muted rounded-lg p-4 animate-fade-in">
-                            <p className="font-medium text-foreground mb-2">
-                              Der Referenzpreis basiert auf:
-                            </p>
-                            <ul className="space-y-1 list-disc list-inside">
-                              {priceRange.isMarketBased ? (
-                                <>
-                                  <li>Aktuelle Marktpreise vergleichbarer Maschinen</li>
-                                  <li>Hersteller & Modellvergleich</li>
-                                </>
-                              ) : (
-                                <>
-                                  <li>Kategorie & Größenklasse</li>
-                                </>
-                              )}
-                              <li>Baujahr & Alter</li>
-                              <li>Betriebsstunden</li>
-                              <li>Zustand der Maschine</li>
-                              <li>Dokumentation & Ausstattung</li>
-                              <li>Eventuelle Schäden</li>
-                            </ul>
-                            <p className="mt-3 text-xs">
-                              * Der finale Ankaufpreis wird nach persönlicher 
-                              Begutachtung Ihrer Maschine festgelegt.
-                            </p>
-                          </div>
-                        )}
-                      </>
-                    ) : null
-                  ) : (
-                    <div className="text-center py-6 text-muted-foreground">
-                      <Calculator className="h-10 w-10 mx-auto mb-3 opacity-30" />
-                      <p className="text-sm">
-                        {currentStep < 6 
-                          ? "Der Schätzpreis wird nach Eingabe Ihrer Kontaktdaten angezeigt"
-                          : "Bitte füllen Sie alle Pflichtfelder aus und stimmen Sie der Datenschutzerklärung zu"
-                        }
-                      </p>
-                    </div>
-                  )}
+                  {/* Price is only shown after submission - never during the form */}
+                  <div className="text-center py-6 text-muted-foreground">
+                    <Calculator className="h-10 w-10 mx-auto mb-3 opacity-30" />
+                    <p className="text-sm">
+                      {currentStep < 6 
+                        ? "Füllen Sie das Formular aus, um Ihren Schätzpreis zu erhalten"
+                        : "Nach Absenden Ihrer Anfrage erhalten Sie sofort Ihren Schätzpreis"
+                      }
+                    </p>
+                  </div>
                 </div>
 
                 {/* Summary Card */}
