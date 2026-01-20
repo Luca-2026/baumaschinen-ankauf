@@ -88,8 +88,8 @@ export function HeroSection() {
                 className="group relative flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1 animate-fade-in"
                 style={{ animationDelay: '200ms' }}
               >
-                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
-                  <MachineIcon type="bagger" size="xl" />
+                <div className="transition-all duration-300 group-hover:scale-110">
+                  <MachineIcon type="bagger" size="2xl" />
                 </div>
                 <span className="text-xl font-semibold text-headline">Bagger</span>
                 <span className="text-sm text-muted-foreground text-center">
@@ -103,8 +103,8 @@ export function HeroSection() {
                 className="group relative flex flex-col items-center gap-4 rounded-2xl border-2 border-border bg-card p-8 shadow-sm transition-all duration-300 hover:border-primary hover:shadow-xl hover:-translate-y-1 animate-fade-in"
                 style={{ animationDelay: '300ms' }}
               >
-                <div className="flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 transition-all duration-300 group-hover:bg-primary/20 group-hover:scale-110">
-                  <MachineIcon type="arbeitsbuehne" size="xl" />
+                <div className="transition-all duration-300 group-hover:scale-110">
+                  <MachineIcon type="arbeitsbuehne" size="2xl" />
                 </div>
                 <span className="text-xl font-semibold text-headline">Arbeitsbühne</span>
                 <span className="text-sm text-muted-foreground text-center">
