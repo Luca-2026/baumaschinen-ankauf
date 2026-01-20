@@ -1,27 +1,27 @@
-import { MapPin, Clock, BadgeCheck, Handshake, ExternalLink } from "lucide-react";
+import { BadgeCheck, Clock, Truck, FileCheck, ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { TrustBadge } from "@/components/ui/TrustBadge";
 
 const reasons = [
   {
-    icon: MapPin,
-    title: "NRW-Präsenz",
-    description: "3 Standorte in Krefeld, Bonn und Mülheim – wir sind immer in Ihrer Nähe.",
+    icon: BadgeCheck,
+    title: "Faire & professionelle Online-Bewertung",
+    description: "Bei uns erhältst du einen fairen Preis – auch ohne Experte zu sein!",
   },
   {
     icon: Clock,
-    title: "Schnelle Rückmeldung",
-    description: "Innerhalb von 24 Stunden erhalten Sie eine erste Einschätzung zu Ihrer Maschine.",
+    title: "Maschinenverkauf innerhalb von 24 Stunden",
+    description: "Verkaufe deine Maschine innerhalb eines einzigen Tages – stressfrei und ganz ohne Verhandeln!",
   },
   {
-    icon: BadgeCheck,
-    title: "Faire Preislogik",
-    description: "Nachvollziehbare Bewertung basierend auf Marktwerten und Maschinenzustand.",
+    icon: Truck,
+    title: "Kostenlose Abholung in ganz NRW",
+    description: "Wir holen deine Maschine kostenlos ab – bequem und unkompliziert.",
   },
   {
-    icon: Handshake,
-    title: "Professionelle Abwicklung",
-    description: "Von der Bewertung bis zur Abholung – alles aus einer Hand.",
+    icon: FileCheck,
+    title: "Wir übernehmen den Papierkram",
+    description: "Von der Bewertung bis zur Abwicklung – alles aus einer Hand, komplett stressfrei.",
   },
 ];
 
@@ -30,8 +30,8 @@ export function WhySLTSection() {
     <section className="py-16 md:py-24 bg-background-muted">
       <div className="container">
         <SectionHeading
-          title="Warum SLT?"
-          subtitle="Als Teil der SLT Technology Group verbinden wir lokale Präsenz mit Branchenexpertise."
+          title="Warum bei wirkaufendeinebaumaschinen.de verkaufen?"
+          subtitle="4 Gründe, warum du an uns verkaufen solltest"
         />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
