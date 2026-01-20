@@ -6,6 +6,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/contexts/AuthContext";
 import Index from "./pages/Index";
 import Ankauf from "./pages/Ankauf";
+import SoFunktionierts from "./pages/SoFunktionierts";
+import Gebrauchtmaschinen from "./pages/Gebrauchtmaschinen";
+import Finanzierung from "./pages/Finanzierung";
+import Standorte from "./pages/Standorte";
+import FAQ from "./pages/FAQ";
+import Kontakt from "./pages/Kontakt";
+import Impressum from "./pages/Impressum";
+import Datenschutz from "./pages/Datenschutz";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminLeads from "./pages/admin/AdminLeads";
@@ -25,6 +33,14 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/ankauf" element={<Ankauf />} />
+            <Route path="/so-funktionierts" element={<SoFunktionierts />} />
+            <Route path="/gebrauchtmaschinen" element={<Gebrauchtmaschinen />} />
+            <Route path="/finanzierung" element={<Finanzierung />} />
+            <Route path="/standorte" element={<Standorte />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/kontakt" element={<Kontakt />} />
+            <Route path="/impressum" element={<Impressum />} />
+            <Route path="/datenschutz" element={<Datenschutz />} />
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/leads" element={<AdminLeads />} />
