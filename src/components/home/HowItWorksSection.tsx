@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { 
   FileText, 
   Calculator, 
@@ -51,24 +52,32 @@ interface AnimatedStepCardProps {
   description: string;
   isActive: boolean;
   isPast: boolean;
-  delay: number;
+  index: number;
 }
 
-function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPast, delay }: AnimatedStepCardProps) {
+function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPast, index }: AnimatedStepCardProps) {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      whileHover={{ y: -8 }}
       className={cn(
-        "relative flex flex-col items-center text-center p-6 rounded-xl transition-all duration-500 animate-fade-in",
+        "relative flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300",
         isActive
           ? "bg-card shadow-xl border-2 border-accent scale-105"
           : isPast
           ? "bg-card/80 shadow-sm border border-success/30"
-          : "bg-card shadow-sm border border-border hover:shadow-md hover:-translate-y-1"
+          : "bg-card shadow-sm border border-border hover:shadow-md"
       )}
-      style={{ animationDelay: `${delay}ms` }}
     >
       {/* Step Number */}
-      <div
+      <motion.div
+        initial={{ scale: 0 }}
+        whileInView={{ scale: 1 }}
+        viewport={{ once: true }}
+        transition={{ delay: 0.2 + index * 0.1, type: "spring", stiffness: 300 }}
         className={cn(
           "absolute -top-3 left-1/2 -translate-x-1/2 flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300",
           isActive
@@ -79,14 +88,16 @@ function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPa
         )}
       >
         {isPast ? "✓" : step}
-      </div>
+      </motion.div>
 
       {/* Icon */}
-      <div
+      <motion.div
+        animate={isActive ? { scale: [1, 1.1, 1] } : {}}
+        transition={{ repeat: isActive ? Infinity : 0, duration: 2 }}
         className={cn(
           "mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-all duration-500",
           isActive 
-            ? "bg-accent/20 animate-pulse" 
+            ? "bg-accent/20" 
             : isPast 
             ? "bg-success/10" 
             : "bg-primary/10"
@@ -96,13 +107,13 @@ function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPa
           className={cn(
             "h-8 w-8 transition-all duration-300",
             isActive 
-              ? "text-accent scale-110" 
+              ? "text-accent" 
               : isPast 
               ? "text-success" 
               : "text-primary"
           )}
         />
-      </div>
+      </motion.div>
 
       {/* Content */}
       <h3 className={cn(
@@ -112,7 +123,7 @@ function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPa
         {title}
       </h3>
       <p className="text-sm text-muted-foreground">{description}</p>
-    </div>
+    </motion.div>
   );
 }
 
@@ -130,10 +141,17 @@ export function HowItWorksSection() {
   return (
     <section className="py-16 md:py-24 bg-background-muted overflow-hidden">
       <div className="container">
-        <SectionHeading
-          title="So funktioniert's"
-          subtitle="In 5 einfachen Schritten vom Angebot zur Auszahlung – transparent und unkompliziert."
-        />
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <SectionHeading
+            title="So funktioniert's"
+            subtitle="In 5 einfachen Schritten vom Angebot zur Auszahlung – transparent und unkompliziert."
+          />
+        </motion.div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
           {steps.map((step, index) => (
@@ -145,15 +163,21 @@ export function HowItWorksSection() {
                 description={step.description}
                 isActive={activeStep === index + 1}
                 isPast={activeStep > index + 1}
-                delay={index * 100}
+                index={index}
               />
               {/* Animated Connector Line */}
               {index < steps.length - 1 && (
                 <div className="hidden lg:flex absolute top-1/2 -right-3 items-center">
-                  <div className={cn(
-                    "w-6 h-0.5 transition-all duration-500",
-                    activeStep > index + 1 ? "bg-success" : "bg-border"
-                  )} />
+                  <motion.div 
+                    initial={{ scaleX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
+                    className={cn(
+                      "w-6 h-0.5 origin-left transition-colors duration-500",
+                      activeStep > index + 1 ? "bg-success" : "bg-border"
+                    )} 
+                  />
                   <ChevronRight className={cn(
                     "h-4 w-4 -ml-1 transition-all duration-500",
                     activeStep > index + 1 
@@ -169,11 +193,19 @@ export function HowItWorksSection() {
         </div>
 
         {/* Progress Indicator */}
-        <div className="flex justify-center mt-8 gap-2">
+        <motion.div 
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.5 }}
+          className="flex justify-center mt-8 gap-2"
+        >
           {steps.map((_, index) => (
-            <button
+            <motion.button
               key={index}
               onClick={() => setActiveStep(index + 1)}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
               className={cn(
                 "w-2 h-2 rounded-full transition-all duration-300",
                 activeStep === index + 1
@@ -184,7 +216,7 @@ export function HowItWorksSection() {
               )}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
