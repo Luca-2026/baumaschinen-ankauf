@@ -1,8 +1,9 @@
 import { ArrowRight } from "lucide-react";
-import { WizardFormData, baggerSubcategories, arbeitsbuehneSubcategories } from "@/types/wizard";
+import { WizardFormData } from "@/types/wizard";
 import { MachineIcon } from "@/components/ui/MachineIcon";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
+import { getSubcategoriesForCategory } from "@/data/machineData";
 
 interface Step1CategoryProps {
   formData: WizardFormData;
@@ -11,7 +12,7 @@ interface Step1CategoryProps {
 }
 
 export function Step1Category({ formData, updateFormData, onNext }: Step1CategoryProps) {
-  const subcategories = formData.category === "bagger" ? baggerSubcategories : arbeitsbuehneSubcategories;
+  const subcategories = formData.category ? getSubcategoriesForCategory(formData.category) : [];
 
   const handleCategorySelect = (category: "bagger" | "arbeitsbuehne") => {
     updateFormData({ 
@@ -25,7 +26,14 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
   };
 
   const handleSubcategorySelect = (subcategory: string) => {
-    updateFormData({ subcategory });
+    // Reset manufacturer and model when subcategory changes
+    updateFormData({ 
+      subcategory,
+      manufacturerId: "",
+      manufacturerName: "",
+      modelId: "",
+      modelName: "",
+    });
   };
 
   const canProceed = formData.category !== "";
@@ -89,10 +97,10 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
       </div>
 
       {/* Subcategory Selection */}
-      {formData.category && (
+      {formData.category && subcategories.length > 0 && (
         <div className="animate-fade-in">
           <Label className="text-base font-medium mb-4 block">
-            Welcher Typ genau? (optional)
+            Welcher Typ genau?
           </Label>
           <div className="flex flex-wrap gap-2">
             {subcategories.map((sub) => (

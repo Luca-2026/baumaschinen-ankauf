@@ -1,51 +1,54 @@
-import { useState } from "react";
-import { Search, AlertCircle } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Search, AlertCircle, ChevronDown } from "lucide-react";
 import { WizardFormData } from "@/types/wizard";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-
-interface Manufacturer {
-  id: string;
-  name: string;
-  category: string;
-}
-
-interface Model {
-  id: string;
-  name: string;
-  manufacturer_id: string;
-}
+import { getManufacturersForCategory, getModelsForManufacturer, MachineModel } from "@/data/machineData";
 
 interface Step2ManufacturerProps {
   formData: WizardFormData;
   updateFormData: (updates: Partial<WizardFormData>) => void;
-  manufacturers: Manufacturer[];
-  models: Model[];
 }
 
 export function Step2Manufacturer({
   formData,
   updateFormData,
-  manufacturers,
-  models,
 }: Step2ManufacturerProps) {
   const [manufacturerSearch, setManufacturerSearch] = useState("");
   const [modelSearch, setModelSearch] = useState("");
+  const [showAllManufacturers, setShowAllManufacturers] = useState(false);
+
+  // Get manufacturers from static data
+  const manufacturers = useMemo(() => {
+    if (!formData.category) return [];
+    return getManufacturersForCategory(formData.category, formData.subcategory);
+  }, [formData.category, formData.subcategory]);
+
+  // Get models from static data
+  const models = useMemo(() => {
+    if (!formData.category || !formData.manufacturerName) return [];
+    return getModelsForManufacturer(formData.category, formData.manufacturerName, formData.subcategory);
+  }, [formData.category, formData.manufacturerName, formData.subcategory]);
 
   const filteredManufacturers = manufacturers.filter((m) =>
-    m.name.toLowerCase().includes(manufacturerSearch.toLowerCase())
+    m.toLowerCase().includes(manufacturerSearch.toLowerCase())
   );
 
   const filteredModels = models.filter((m) =>
-    m.name.toLowerCase().includes(modelSearch.toLowerCase())
+    m.model.toLowerCase().includes(modelSearch.toLowerCase())
   );
 
-  const handleManufacturerSelect = (manufacturer: Manufacturer) => {
+  // Show first 8 or all if expanded
+  const displayedManufacturers = showAllManufacturers 
+    ? filteredManufacturers 
+    : filteredManufacturers.slice(0, 8);
+
+  const handleManufacturerSelect = (manufacturer: string) => {
     updateFormData({
-      manufacturerId: manufacturer.id,
-      manufacturerName: manufacturer.name,
+      manufacturerId: manufacturer, // Use name as ID for static data
+      manufacturerName: manufacturer,
       modelId: "",
       modelName: "",
       isCustomModel: false,
@@ -54,12 +57,14 @@ export function Step2Manufacturer({
     setModelSearch("");
   };
 
-  const handleModelSelect = (model: Model) => {
+  const handleModelSelect = (model: MachineModel) => {
     updateFormData({
-      modelId: model.id,
-      modelName: model.name,
+      modelId: `${model.manufacturer}-${model.model}`,
+      modelName: model.model,
       isCustomModel: false,
       customModelName: "",
+      // Auto-set drive type based on undercarriage
+      driveType: model.type === "Mobil" ? "mobil" : "kette",
     });
   };
 
@@ -94,23 +99,36 @@ export function Step2Manufacturer({
             className="pl-10"
           />
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 max-h-48 overflow-y-auto p-1">
-          {filteredManufacturers.map((manufacturer) => (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 p-1">
+          {displayedManufacturers.map((manufacturer) => (
             <button
-              key={manufacturer.id}
+              key={manufacturer}
               type="button"
               onClick={() => handleManufacturerSelect(manufacturer)}
               className={cn(
                 "px-3 py-2 rounded-lg border text-sm font-medium transition-all text-left",
-                formData.manufacturerId === manufacturer.id
+                formData.manufacturerName === manufacturer
                   ? "border-primary bg-primary text-primary-foreground"
                   : "border-border bg-card hover:border-primary hover:bg-primary/5"
               )}
             >
-              {manufacturer.name}
+              {manufacturer}
             </button>
           ))}
         </div>
+        
+        {/* Show more button */}
+        {filteredManufacturers.length > 8 && !showAllManufacturers && (
+          <button
+            type="button"
+            onClick={() => setShowAllManufacturers(true)}
+            className="mt-2 flex items-center gap-1 text-sm text-primary hover:underline"
+          >
+            <ChevronDown className="h-4 w-4" />
+            Alle {filteredManufacturers.length} Hersteller anzeigen
+          </button>
+        )}
+        
         {filteredManufacturers.length === 0 && (
           <p className="text-sm text-muted-foreground mt-2">
             Kein Hersteller gefunden. Sie können das Modell manuell eingeben.
@@ -119,7 +137,7 @@ export function Step2Manufacturer({
       </div>
 
       {/* Model Selection */}
-      {formData.manufacturerId && (
+      {formData.manufacturerName && (
         <div className="animate-fade-in">
           <Label className="text-base font-medium mb-3 block">Modell</Label>
           
@@ -136,27 +154,35 @@ export function Step2Manufacturer({
               </div>
               
               {filteredModels.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-40 overflow-y-auto p-1 mb-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 max-h-60 overflow-y-auto p-1 mb-4">
                   {filteredModels.map((model) => (
                     <button
-                      key={model.id}
+                      key={`${model.manufacturer}-${model.model}`}
                       type="button"
                       onClick={() => handleModelSelect(model)}
                       className={cn(
-                        "px-3 py-2 rounded-lg border text-sm font-medium transition-all text-left",
-                        formData.modelId === model.id
+                        "px-3 py-3 rounded-lg border text-sm font-medium transition-all text-left",
+                        formData.modelName === model.model
                           ? "border-primary bg-primary text-primary-foreground"
                           : "border-border bg-card hover:border-primary hover:bg-primary/5"
                       )}
                     >
-                      {model.name}
+                      <div className="font-medium">{model.model}</div>
+                      <div className={cn(
+                        "text-xs mt-1",
+                        formData.modelName === model.model
+                          ? "text-primary-foreground/80"
+                          : "text-muted-foreground"
+                      )}>
+                        {model.tonnage_t}t • {model.type}
+                      </div>
                     </button>
                   ))}
                 </div>
               ) : (
                 <div className="bg-muted/50 rounded-lg p-4 mb-4">
                   <p className="text-sm text-muted-foreground">
-                    Keine Modelle für diesen Hersteller gefunden.
+                    Keine Modelle für diesen Hersteller in dieser Kategorie gefunden.
                   </p>
                 </div>
               )}
@@ -184,7 +210,10 @@ export function Step2Manufacturer({
                   <Input
                     placeholder="Modellbezeichnung eingeben"
                     value={formData.customModelName}
-                    onChange={(e) => updateFormData({ customModelName: e.target.value })}
+                    onChange={(e) => updateFormData({ 
+                      customModelName: e.target.value,
+                      modelName: e.target.value 
+                    })}
                   />
                   <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted rounded-md p-3">
                     <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
