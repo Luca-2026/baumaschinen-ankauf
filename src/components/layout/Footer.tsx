@@ -78,7 +78,7 @@ export function Footer() {
 
           {/* Locations */}
           <div>
-            <h3 className="font-semibold mb-4">Unsere Standorte</h3>
+            <h3 className="font-semibold mb-4 text-primary-foreground">Unsere Standorte</h3>
             <div className="space-y-4">
               {locations.map((location) => (
                 <div key={location.city} className="flex items-start gap-2">
@@ -95,7 +95,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="font-semibold mb-4">Schnellzugriff</h3>
+            <h3 className="font-semibold mb-4 text-primary-foreground">Schnellzugriff</h3>
             <nav className="space-y-2">
               <Link
                 to="/ankauf"
@@ -138,7 +138,7 @@ export function Footer() {
 
           {/* Neumaschinen Link & Legal */}
           <div>
-            <h3 className="font-semibold mb-4">Neumaschinen</h3>
+            <h3 className="font-semibold mb-4 text-primary-foreground">Neumaschinen</h3>
             <a
               href="https://www.zoomlion-nrw.de"
               target="_blank"
@@ -152,7 +152,7 @@ export function Footer() {
               Neumaschinen von Zoomlion kaufen
             </p>
 
-            <h3 className="font-semibold mt-8 mb-4">Rechtliches</h3>
+            <h3 className="font-semibold mt-8 mb-4 text-primary-foreground">Rechtliches</h3>
             <nav className="space-y-2">
               <Link
                 to="/impressum"
