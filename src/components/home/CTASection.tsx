@@ -7,7 +7,7 @@ export function CTASection() {
     <section className="py-16 md:py-24 bg-primary text-primary-foreground">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl">
+          <h2 className="text-3xl font-bold tracking-tight md:text-4xl lg:text-5xl text-white">
             Bereit, Ihre Baumaschine zu verkaufen?
           </h2>
           <p className="mt-6 text-lg text-primary-foreground/80">
