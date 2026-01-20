@@ -14,12 +14,12 @@ export function SectionHeading({
   className,
 }: SectionHeadingProps) {
   return (
-    <div className={cn(centered && "text-center", "mb-12", className)}>
-      <h2 className="text-3xl font-bold tracking-tight text-headline md:text-4xl">
+    <div className={cn(centered && "text-center", "mb-8 sm:mb-12", className)}>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-headline">
         {title}
       </h2>
       {subtitle && (
-        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="mt-3 sm:mt-4 text-sm sm:text-base lg:text-lg text-muted-foreground max-w-2xl mx-auto px-2">
           {subtitle}
         </p>
       )}

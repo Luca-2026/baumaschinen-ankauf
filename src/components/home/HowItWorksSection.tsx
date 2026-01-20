@@ -61,12 +61,12 @@ function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPa
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      transition={{ duration: 0.5, delay: index * 0.05, ease: "easeOut" }}
       whileHover={{ y: -8 }}
       className={cn(
-        "relative flex flex-col items-center text-center p-6 rounded-xl transition-all duration-300",
+        "relative flex flex-col items-center text-center p-4 sm:p-6 rounded-xl transition-all duration-300",
         isActive
-          ? "bg-card shadow-xl border-2 border-accent scale-105"
+          ? "bg-card shadow-xl border-2 border-accent sm:scale-105"
           : isPast
           ? "bg-card/80 shadow-sm border border-success/30"
           : "bg-card shadow-sm border border-border hover:shadow-md"
@@ -77,11 +77,11 @@ function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPa
         initial={{ scale: 0 }}
         whileInView={{ scale: 1 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.2 + index * 0.1, type: "spring", stiffness: 300 }}
+        transition={{ delay: 0.2 + index * 0.05, type: "spring", stiffness: 300 }}
         className={cn(
-          "absolute -top-3 left-1/2 -translate-x-1/2 flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300",
+          "absolute -top-2.5 sm:-top-3 left-1/2 -translate-x-1/2 flex h-6 w-6 sm:h-7 sm:w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300",
           isActive
-            ? "bg-accent text-accent-foreground scale-125 shadow-lg"
+            ? "bg-accent text-accent-foreground sm:scale-125 shadow-lg"
             : isPast
             ? "bg-success text-white"
             : "bg-primary text-primary-foreground"
@@ -95,7 +95,7 @@ function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPa
         animate={isActive ? { scale: [1, 1.1, 1] } : {}}
         transition={{ repeat: isActive ? Infinity : 0, duration: 2 }}
         className={cn(
-          "mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-all duration-500",
+          "mb-3 sm:mb-4 flex h-12 w-12 sm:h-16 sm:w-16 items-center justify-center rounded-full transition-all duration-500",
           isActive 
             ? "bg-accent/20" 
             : isPast 
@@ -105,7 +105,7 @@ function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPa
       >
         <Icon
           className={cn(
-            "h-8 w-8 transition-all duration-300",
+            "h-6 w-6 sm:h-8 sm:w-8 transition-all duration-300",
             isActive 
               ? "text-accent" 
               : isPast 
@@ -117,12 +117,12 @@ function AnimatedStepCard({ step, icon: Icon, title, description, isActive, isPa
 
       {/* Content */}
       <h3 className={cn(
-        "mb-2 font-semibold transition-colors duration-300",
+        "mb-1 sm:mb-2 font-semibold text-sm sm:text-base transition-colors duration-300",
         isActive ? "text-accent" : "text-headline"
       )}>
         {title}
       </h3>
-      <p className="text-sm text-muted-foreground">{description}</p>
+      <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3">{description}</p>
     </motion.div>
   );
 }
@@ -139,8 +139,8 @@ export function HowItWorksSection() {
   }, []);
 
   return (
-    <section className="py-16 md:py-24 bg-background-muted overflow-hidden">
-      <div className="container">
+    <section className="py-10 sm:py-16 md:py-24 bg-background-muted overflow-hidden">
+      <div className="container px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -153,7 +153,7 @@ export function HowItWorksSection() {
           />
         </motion.div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+        <div className="grid gap-4 sm:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
           {steps.map((step, index) => (
             <div key={step.step} className="relative">
               <AnimatedStepCard

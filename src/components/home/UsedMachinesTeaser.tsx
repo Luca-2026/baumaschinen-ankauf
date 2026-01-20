@@ -58,8 +58,8 @@ export function UsedMachinesTeaser() {
   }
 
   return (
-    <section className="py-16 md:py-24 overflow-hidden">
-      <div className="container">
+    <section className="py-10 sm:py-16 md:py-24 overflow-hidden">
+      <div className="container px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -78,21 +78,21 @@ export function UsedMachinesTeaser() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-          className="flex justify-center mb-8"
+          className="flex justify-center mb-6 sm:mb-8"
         >
-          <div className="inline-flex items-center gap-2 bg-success text-white font-semibold px-6 py-3 rounded-full shadow-lg">
-            <ShieldCheck className="h-5 w-5" />
+          <div className="inline-flex items-center gap-2 bg-success text-white font-semibold px-4 sm:px-6 py-2 sm:py-3 rounded-full shadow-lg text-sm sm:text-base">
+            <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" />
             <span>1 Jahr Gewährleistung auf alle Gebrauchtmaschinen</span>
           </div>
         </motion.div>
 
         {loading ? (
-          <div className="text-center py-12">
-            <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
-            <p className="text-muted-foreground">Maschinen werden geladen...</p>
+          <div className="text-center py-8 sm:py-12">
+            <div className="animate-spin h-6 w-6 sm:h-8 sm:w-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-3 sm:mb-4" />
+            <p className="text-sm sm:text-base text-muted-foreground">Maschinen werden geladen...</p>
           </div>
         ) : (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
             {machines.map((machine, index) => (
               <motion.div
                 key={machine.id}
