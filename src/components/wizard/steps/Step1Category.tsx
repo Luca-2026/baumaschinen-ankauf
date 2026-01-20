@@ -23,6 +23,8 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
       modelId: "",
       modelName: "",
       workingHeight: "",
+      // Bagger sind immer Diesel
+      driveType: category === "bagger" ? "diesel" : "",
     });
   };
 
