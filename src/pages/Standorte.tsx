@@ -10,36 +10,42 @@ import {
   Building2
 } from "lucide-react";
 
+import krefeldImage from "@/assets/locations/krefeld.jpg";
+import bonnImage from "@/assets/locations/bonn.webp";
+
 const locations = [
   {
     city: "Krefeld",
     address: "Anrather Straße 291",
     zip: "47803 Krefeld",
     phone: "+49 2151 XXXXXX",
-    email: "krefeld@slt-baumaschinen.de",
+    email: "krefeld@wirkaufendeinebaumaschinen.de",
     hours: "Mo-Fr: 08:00 - 17:00 Uhr",
     description: "Unser Hauptstandort mit großem Maschinenpark und Werkstatt.",
-    mapUrl: "https://maps.google.com/?q=Anrather+Straße+291,+47803+Krefeld"
+    mapUrl: "https://maps.google.com/?q=Anrather+Straße+291,+47803+Krefeld",
+    image: krefeldImage
   },
   {
     city: "Bonn",
     address: "Drachenburgstraße 8",
     zip: "53179 Bonn",
     phone: "+49 228 XXXXXX",
-    email: "bonn@slt-baumaschinen.de",
+    email: "bonn@wirkaufendeinebaumaschinen.de",
     hours: "Mo-Fr: 08:00 - 17:00 Uhr",
     description: "Standort für den Großraum Bonn/Köln mit Beratung vor Ort.",
-    mapUrl: "https://maps.google.com/?q=Drachenburgstraße+8,+53179+Bonn"
+    mapUrl: "https://maps.google.com/?q=Drachenburgstraße+8,+53179+Bonn",
+    image: bonnImage
   },
   {
     city: "Mülheim an der Ruhr",
     address: "Ruhrorter Str. 122",
     zip: "45478 Mülheim an der Ruhr",
     phone: "+49 208 XXXXXX",
-    email: "muelheim@slt-baumaschinen.de",
+    email: "muelheim@wirkaufendeinebaumaschinen.de",
     hours: "Mo-Fr: 08:00 - 17:00 Uhr",
     description: "Ihr Ansprechpartner im Ruhrgebiet.",
-    mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+122,+45478+Mülheim+an+der+Ruhr"
+    mapUrl: "https://maps.google.com/?q=Ruhrorter+Str.+122,+45478+Mülheim+an+der+Ruhr",
+    image: null
   }
 ];
 
@@ -70,12 +76,19 @@ export default function Standorte() {
                 key={location.city}
                 className="rounded-2xl border bg-card overflow-hidden shadow-sm hover:shadow-lg transition-all"
               >
-                {/* Map Placeholder */}
-                <div className="aspect-video bg-muted flex items-center justify-center relative">
-                  <div className="text-center">
-                    <MapPin className="h-12 w-12 text-primary mx-auto mb-2" />
-                    <span className="text-sm text-muted-foreground">Karte</span>
-                  </div>
+                {/* Location Image */}
+                <div className="aspect-video bg-muted relative overflow-hidden">
+                  {location.image ? (
+                    <img 
+                      src={location.image} 
+                      alt={`Standort ${location.city}`}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                      <MapPin className="h-12 w-12 text-primary" />
+                    </div>
+                  )}
                   <Button
                     asChild
                     size="sm"
