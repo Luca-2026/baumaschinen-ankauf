@@ -13,7 +13,8 @@ import {
   Phone,
   Mail,
   ArrowRight,
-  Expand
+  Expand,
+  ShieldCheck
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -106,10 +107,14 @@ export default function Gebrauchtmaschinen() {
             <h1 className="text-4xl font-bold tracking-tight text-headline md:text-5xl mb-6">
               Geprüfte Gebrauchtmaschinen
             </h1>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-xl text-muted-foreground mb-6">
               Hochwertige Bagger und Arbeitsbühnen aus unserem Bestand – 
               alle technisch geprüft und sofort einsatzbereit.
             </p>
+            <div className="inline-flex items-center gap-2 bg-success text-white font-semibold px-4 py-2 rounded-full shadow-lg">
+              <ShieldCheck className="h-5 w-5" />
+              1 Jahr Gewährleistung auf alle Maschinen
+            </div>
           </div>
         </div>
       </section>
