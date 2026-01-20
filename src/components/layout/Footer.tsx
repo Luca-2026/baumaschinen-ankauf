@@ -60,11 +60,11 @@ export function Footer() {
             </address>
             <div className="mt-4 space-y-2">
               <a
-                href="tel:+492151999999"
+                href="tel:+4921514179904"
                 className="flex items-center gap-2 text-sm hover:text-accent transition-colors"
               >
                 <Phone className="h-4 w-4" />
-                02151 999999
+                02151 417 990 4
               </a>
               <a
                 href="mailto:info@wirkaufendeinebaumaschinen.de"
