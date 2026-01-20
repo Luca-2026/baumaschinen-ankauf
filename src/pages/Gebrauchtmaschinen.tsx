@@ -119,37 +119,37 @@ export default function Gebrauchtmaschinen() {
         <div className="container">
           {/* Filter Tabs */}
           <div className="flex justify-center mb-12">
-            <div className="inline-flex rounded-lg border bg-white p-1 shadow-sm">
+            <div className="inline-flex rounded-xl border bg-white p-1.5 shadow-sm gap-1">
               <button
                 onClick={() => setFilter("all")}
-                className={`px-6 py-3 rounded-md text-sm font-medium transition-all ${
+                className={`px-8 py-4 rounded-lg text-base font-medium transition-all ${
                   filter === "all"
                     ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
                 Alle Maschinen
               </button>
               <button
                 onClick={() => setFilter("bagger")}
-                className={`flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all ${
+                className={`flex items-center gap-3 px-8 py-4 rounded-lg text-base font-medium transition-all ${
                   filter === "bagger"
                     ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
-                <MachineIcon type="bagger" size="sm" />
+                <MachineIcon type="bagger" size="lg" />
                 Bagger
               </button>
               <button
                 onClick={() => setFilter("arbeitsbuehne")}
-                className={`flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all ${
+                className={`flex items-center gap-3 px-8 py-4 rounded-lg text-base font-medium transition-all ${
                   filter === "arbeitsbuehne"
                     ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground hover:bg-muted"
                 }`}
               >
-                <MachineIcon type="arbeitsbuehne" size="sm" />
+                <MachineIcon type="arbeitsbuehne" size="lg" />
                 Arbeitsbühnen
               </button>
             </div>
