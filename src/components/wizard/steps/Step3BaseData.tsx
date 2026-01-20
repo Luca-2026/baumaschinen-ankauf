@@ -34,8 +34,9 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
   // Only show working height selector for custom models without subcategory
   const showWorkingHeightSelector = formData.category === "arbeitsbuehne" && formData.isCustomModel && !hasKnownWorkingHeight;
   
-  // Only show drive type selector if not already set by model selection
-  const showDriveTypeSelector = !hasKnownDriveType || formData.isCustomModel;
+  // Bagger sind IMMER Diesel - nie Antriebsart anzeigen
+  // Arbeitsbühne: nur anzeigen wenn kein Modell gewählt oder Custom-Modell
+  const showDriveTypeSelector = formData.category === "arbeitsbuehne" && (!hasKnownDriveType || formData.isCustomModel);
 
   const isNRW = formData.locationZip && 
     (formData.locationZip.startsWith("4") || 
@@ -76,15 +77,16 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
       </div>
 
       {/* Show selected model info for Bagger */}
-      {hasSelectedBaggerModel && (
+      {formData.category === "bagger" && (
         <div className="bg-primary/5 rounded-xl p-4 flex items-center gap-3">
           <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
           <div>
             <p className="font-medium text-headline">
-              {formData.manufacturerName} {formData.modelName}
+              {hasSelectedBaggerModel ? `${formData.manufacturerName} ${formData.modelName}` : formData.subcategory ? "Bagger" : "Bagger"}
             </p>
             <p className="text-sm text-muted-foreground">
-              Gewichtsklasse und Fahrwerk wurden automatisch erfasst
+              Antriebsart: Diesel (automatisch erfasst)
+              {hasSelectedBaggerModel && " • Gewichtsklasse und Fahrwerk erkannt"}
             </p>
           </div>
         </div>
