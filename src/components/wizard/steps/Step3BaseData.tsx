@@ -2,7 +2,9 @@ import { WizardFormData, arbeitsbuehneWorkingHeights, driveTypes } from "@/types
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Info, CheckCircle2 } from "lucide-react";
+import { MapPin, Info, CheckCircle2, Fuel, Zap, Leaf } from "lucide-react";
+import { arbeitsbuehneSubtypes } from "@/data/machineData";
+import { useMemo } from "react";
 
 interface Step3BaseDataProps {
   formData: WizardFormData;
@@ -13,10 +15,27 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 30 }, (_, i) => currentYear - i);
   
-  // Only show weight class / working height if no model is selected (for Arbeitsbühne, or custom models)
-  const showSizeSelector = formData.category === "arbeitsbuehne" || formData.isCustomModel;
-  const sizeOptions = arbeitsbuehneWorkingHeights;
-  const sizeLabel = "Arbeitshöhe";
+  // Determine what info is already known from subcategory/model selection
+  const arbeitsbuehneSubtype = useMemo(() => {
+    if (formData.category !== "arbeitsbuehne" || !formData.subcategory) return null;
+    return arbeitsbuehneSubtypes.find(s => s.value === formData.subcategory) || null;
+  }, [formData.category, formData.subcategory]);
+
+  // For Arbeitsbühne: working height is known from subcategory, drive type from model
+  const hasKnownWorkingHeight = formData.category === "arbeitsbuehne" && arbeitsbuehneSubtype !== null;
+  const hasKnownDriveType = formData.category === "arbeitsbuehne" && formData.modelName && !formData.isCustomModel && formData.driveType;
+  
+  // For Bagger with selected model, show the model info
+  const hasSelectedBaggerModel = formData.category === "bagger" && formData.modelName && !formData.isCustomModel;
+  
+  // For Arbeitsbühne with selected model
+  const hasSelectedArbeitsbuehneModel = formData.category === "arbeitsbuehne" && formData.modelName && !formData.isCustomModel;
+
+  // Only show working height selector for custom models without subcategory
+  const showWorkingHeightSelector = formData.category === "arbeitsbuehne" && formData.isCustomModel && !hasKnownWorkingHeight;
+  
+  // Only show drive type selector if not already set by model selection
+  const showDriveTypeSelector = !hasKnownDriveType || formData.isCustomModel;
 
   const isNRW = formData.locationZip && 
     (formData.locationZip.startsWith("4") || 
@@ -24,8 +43,26 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
      formData.locationZip.startsWith("32") ||
      formData.locationZip.startsWith("33"));
 
-  // For Bagger with selected model, show the model info
-  const hasSelectedModel = formData.category === "bagger" && formData.modelName && !formData.isCustomModel;
+  // Get display text for known data
+  const getArbeitsbuehneTypeInfo = () => {
+    if (!arbeitsbuehneSubtype) return null;
+    
+    const categoryLabel = arbeitsbuehneSubtype.categoryType === "scissor" ? "Scherenbühne" : "Gelenkteleskopbühne";
+    const heightRange = `${arbeitsbuehneSubtype.workingHeightRange.min}-${arbeitsbuehneSubtype.workingHeightRange.max}m Arbeitshöhe`;
+    
+    return { categoryLabel, heightRange };
+  };
+
+  const getDriveTypeLabel = (type: string) => {
+    const labels: Record<string, { label: string; Icon: typeof Fuel }> = {
+      diesel: { label: "Diesel", Icon: Fuel },
+      electric: { label: "Elektro", Icon: Zap },
+      hybrid: { label: "Hybrid", Icon: Leaf },
+    };
+    return labels[type] || { label: type, Icon: Fuel };
+  };
+
+  const typeInfo = getArbeitsbuehneTypeInfo();
 
   return (
     <div className="space-y-8">
@@ -39,7 +76,7 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
       </div>
 
       {/* Show selected model info for Bagger */}
-      {hasSelectedModel && (
+      {hasSelectedBaggerModel && (
         <div className="bg-primary/5 rounded-xl p-4 flex items-center gap-3">
           <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
           <div>
@@ -49,6 +86,33 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
             <p className="text-sm text-muted-foreground">
               Gewichtsklasse und Fahrwerk wurden automatisch erfasst
             </p>
+          </div>
+        </div>
+      )}
+
+      {/* Show known info for Arbeitsbühne */}
+      {formData.category === "arbeitsbuehne" && typeInfo && (
+        <div className="bg-primary/5 rounded-xl p-4 space-y-2">
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+            <div>
+              <p className="font-medium text-headline">
+                {typeInfo.categoryLabel} • {typeInfo.heightRange}
+              </p>
+              {hasSelectedArbeitsbuehneModel && (
+                <p className="text-sm text-muted-foreground">
+                  {formData.manufacturerName} {formData.modelName}
+                  {hasKnownDriveType && (
+                    <> • {getDriveTypeLabel(formData.driveType).label}</>
+                  )}
+                </p>
+              )}
+              {!hasSelectedArbeitsbuehneModel && (
+                <p className="text-sm text-muted-foreground">
+                  Typ und Arbeitshöhe wurden automatisch erfasst
+                </p>
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -91,21 +155,21 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
           />
         </div>
 
-        {/* Size (Working Height) - only for Arbeitsbühne or custom models */}
-        {showSizeSelector && (
+        {/* Working Height - only for custom Arbeitsbühne without subcategory */}
+        {showWorkingHeightSelector && (
           <div>
             <Label className="text-base font-medium">
-              {sizeLabel}
+              Arbeitshöhe
             </Label>
             <Select
               value={formData.workingHeight}
               onValueChange={(value) => updateFormData({ workingHeight: value })}
             >
               <SelectTrigger className="mt-2">
-                <SelectValue placeholder={`${sizeLabel} wählen`} />
+                <SelectValue placeholder="Arbeitshöhe wählen" />
               </SelectTrigger>
               <SelectContent>
-                {sizeOptions.map((option) => (
+                {arbeitsbuehneWorkingHeights.map((option) => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
                   </SelectItem>
@@ -115,27 +179,29 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
           </div>
         )}
 
-        {/* Drive Type */}
-        <div>
-          <Label className="text-base font-medium">
-            Antriebsart
-          </Label>
-          <Select
-            value={formData.driveType}
-            onValueChange={(value) => updateFormData({ driveType: value })}
-          >
-            <SelectTrigger className="mt-2">
-              <SelectValue placeholder="Antriebsart wählen" />
-            </SelectTrigger>
-            <SelectContent>
-              {driveTypes.map((type) => (
-                <SelectItem key={type.value} value={type.value}>
-                  {type.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Drive Type - only if not already set by model */}
+        {showDriveTypeSelector && (
+          <div>
+            <Label className="text-base font-medium">
+              Antriebsart
+            </Label>
+            <Select
+              value={formData.driveType}
+              onValueChange={(value) => updateFormData({ driveType: value })}
+            >
+              <SelectTrigger className="mt-2">
+                <SelectValue placeholder="Antriebsart wählen" />
+              </SelectTrigger>
+              <SelectContent>
+                {driveTypes.map((type) => (
+                  <SelectItem key={type.value} value={type.value}>
+                    {type.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {/* Serial Number */}
         <div>

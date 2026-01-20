@@ -3,7 +3,7 @@ import { WizardFormData } from "@/types/wizard";
 import { MachineIcon } from "@/components/ui/MachineIcon";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
-import { getSubcategoriesForCategory } from "@/data/machineData";
+import { getSubcategoriesForCategory, arbeitsbuehneSubtypes } from "@/data/machineData";
 
 interface Step1CategoryProps {
   formData: WizardFormData;
@@ -22,10 +22,23 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
       manufacturerName: "",
       modelId: "",
       modelName: "",
+      workingHeight: "",
     });
   };
 
   const handleSubcategorySelect = (subcategory: string) => {
+    // For Arbeitsbühne, auto-set working height based on subcategory
+    let workingHeight = "";
+    
+    if (formData.category === "arbeitsbuehne") {
+      const subtype = arbeitsbuehneSubtypes.find(s => s.value === subcategory);
+      if (subtype) {
+        // Set a representative working height based on the range
+        const avgHeight = Math.round((subtype.workingHeightRange.min + subtype.workingHeightRange.max) / 2);
+        workingHeight = `${avgHeight}m`;
+      }
+    }
+    
     // Reset manufacturer and model when subcategory changes
     updateFormData({ 
       subcategory,
@@ -33,6 +46,7 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
       manufacturerName: "",
       modelId: "",
       modelName: "",
+      workingHeight,
     });
   };
 
