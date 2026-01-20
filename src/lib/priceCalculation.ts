@@ -1,6 +1,6 @@
 import { WizardFormData } from "@/types/wizard";
 import { supabase } from "@/integrations/supabase/client";
-import { findMachineModel, DEALER_MARGIN } from "@/data/machineData";
+import { findMachineModel, DEALER_MARGIN, findArbeitsbuehneModel, ArbeitsbuehnModel, MachineModel } from "@/data/machineData";
 
 export interface PriceRange {
   low: number;
@@ -61,10 +61,23 @@ export function calculateStaticMachinePrice(data: WizardFormData): PriceRange | 
   }
 
   // Find the machine in our static data
-  const machine = findMachineModel(data.category, data.manufacturerName, data.modelName);
-  
-  if (!machine) {
-    // Fallback to formula if model not found
+  let usedPriceMinEur: number;
+  let usedPriceMaxEur: number;
+  let matchedModelName: string;
+
+  if (data.category === "bagger") {
+    const machine = findMachineModel(data.category, data.manufacturerName, data.modelName) as MachineModel | null;
+    if (!machine) return null;
+    usedPriceMinEur = machine.usedPriceMinEur;
+    usedPriceMaxEur = machine.usedPriceMaxEur;
+    matchedModelName = `${machine.manufacturer} ${machine.model}`;
+  } else if (data.category === "arbeitsbuehne") {
+    const machine = findArbeitsbuehneModel(data.manufacturerName, data.modelName);
+    if (!machine) return null;
+    usedPriceMinEur = machine.usedPriceMinEur;
+    usedPriceMaxEur = machine.usedPriceMaxEur;
+    matchedModelName = `${machine.manufacturer} ${machine.model}`;
+  } else {
     return null;
   }
 
@@ -122,8 +135,8 @@ export function calculateStaticMachinePrice(data: WizardFormData): PriceRange | 
   positionFactor = Math.max(0, Math.min(1, positionFactor));
 
   // Calculate market value (what we would sell for)
-  const priceRange = machine.usedPriceMaxEur - machine.usedPriceMinEur;
-  const marketValue = machine.usedPriceMinEur + (priceRange * positionFactor);
+  const priceRange = usedPriceMaxEur - usedPriceMinEur;
+  const marketValue = usedPriceMinEur + (priceRange * positionFactor);
 
   // Apply dealer margin (15%) - this is what we offer to buy
   const purchasePrice = marketValue * (1 - DEALER_MARGIN);
@@ -137,7 +150,7 @@ export function calculateStaticMachinePrice(data: WizardFormData): PriceRange | 
     high,
     mid: Math.round(purchasePrice / 100) * 100,
     isMarketBased: true,
-    matchedModel: `${machine.manufacturer} ${machine.model}`,
+    matchedModel: matchedModelName,
   };
 }
 
