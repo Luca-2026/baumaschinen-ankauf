@@ -1,13 +1,48 @@
 import { useCallback } from "react";
 import { WizardFormData } from "@/types/wizard";
 import { Label } from "@/components/ui/label";
-import { Camera, FileText, X, Upload, Info } from "lucide-react";
+import { Camera, FileText, X, Upload, Info, AlertCircle, CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Step5MediaProps {
   formData: WizardFormData;
   updateFormData: (updates: Partial<WizardFormData>) => void;
 }
+
+// Photo requirements by category
+const PHOTO_REQUIREMENTS = {
+  bagger: {
+    min: 5,
+    description: "Mindestens 5 Fotos erforderlich",
+    suggestions: [
+      "Vorderseite",
+      "Rückseite", 
+      "Linke Seite",
+      "Rechte Seite",
+      "Fahrerkabine (innen)",
+    ],
+    optional: [
+      "Typenschild",
+      "Betriebsstundenzähler",
+      "Anbaugeräte",
+      "Eventuelle Schäden",
+    ]
+  },
+  arbeitsbuehne: {
+    min: 2,
+    description: "Mindestens 2 Fotos erforderlich",
+    suggestions: [
+      "Linke Seite",
+      "Rechte Seite",
+    ],
+    optional: [
+      "Plattform/Korb",
+      "Typenschild",
+      "Betriebsstundenzähler",
+      "Bedienelemente",
+    ]
+  }
+};
 
 export function Step5Media({ formData, updateFormData }: Step5MediaProps) {
   const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,6 +66,15 @@ export function Step5Media({ formData, updateFormData }: Step5MediaProps) {
     updateFormData({ documents: newDocuments });
   };
 
+  // Get requirements for current category
+  const requirements = formData.category 
+    ? PHOTO_REQUIREMENTS[formData.category] 
+    : PHOTO_REQUIREMENTS.bagger;
+  
+  const minPhotos = requirements.min;
+  const hasEnoughPhotos = formData.images.length >= minPhotos;
+  const photosNeeded = minPhotos - formData.images.length;
+
   return (
     <div className="space-y-8">
       <div>
@@ -38,7 +82,7 @@ export function Step5Media({ formData, updateFormData }: Step5MediaProps) {
           Fotos & Dokumente
         </h2>
         <p className="text-muted-foreground">
-          Bilder erhöhen die Genauigkeit des Referenzpreises
+          {requirements.description} für eine genaue Preisberechnung
         </p>
       </div>
 
@@ -46,12 +90,25 @@ export function Step5Media({ formData, updateFormData }: Step5MediaProps) {
       <div>
         <Label className="text-base font-medium mb-3 flex items-center gap-2">
           <Camera className="h-5 w-5 text-primary" />
-          Fotos (empfohlen: mind. 3)
+          Fotos *
+          <span className={cn(
+            "ml-2 text-sm font-normal px-2 py-0.5 rounded-full",
+            hasEnoughPhotos 
+              ? "bg-success/20 text-success" 
+              : "bg-destructive/20 text-destructive"
+          )}>
+            {formData.images.length} / {minPhotos} min.
+          </span>
         </Label>
         
         <div className="grid gap-4">
           {/* Upload Area */}
-          <label className="relative flex flex-col items-center justify-center h-40 rounded-xl border-2 border-dashed border-border bg-muted/50 cursor-pointer hover:border-primary hover:bg-primary/5 transition-all">
+          <label className={cn(
+            "relative flex flex-col items-center justify-center h-40 rounded-xl border-2 border-dashed cursor-pointer transition-all",
+            hasEnoughPhotos 
+              ? "border-success/50 bg-success/5 hover:border-success hover:bg-success/10"
+              : "border-border bg-muted/50 hover:border-primary hover:bg-primary/5"
+          )}>
             <input
               type="file"
               accept="image/*"
@@ -59,14 +116,29 @@ export function Step5Media({ formData, updateFormData }: Step5MediaProps) {
               onChange={handleImageUpload}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
-            <Upload className="h-10 w-10 text-muted-foreground mb-2" />
+            {hasEnoughPhotos ? (
+              <CheckCircle2 className="h-10 w-10 text-success mb-2" />
+            ) : (
+              <Upload className="h-10 w-10 text-muted-foreground mb-2" />
+            )}
             <span className="text-sm font-medium text-foreground">
-              Fotos auswählen
+              {hasEnoughPhotos ? "Weitere Fotos hinzufügen" : "Fotos auswählen"}
             </span>
             <span className="text-xs text-muted-foreground mt-1">
               oder hierher ziehen
             </span>
           </label>
+
+          {/* Validation Message */}
+          {!hasEnoughPhotos && (
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-destructive/10 text-destructive text-sm">
+              <AlertCircle className="h-4 w-4 flex-shrink-0" />
+              <span>
+                Noch {photosNeeded} {photosNeeded === 1 ? "Foto" : "Fotos"} erforderlich. 
+                Bitte laden Sie mindestens {minPhotos} Fotos hoch.
+              </span>
+            </div>
+          )}
 
           {/* Image Previews */}
           {formData.images.length > 0 && (
@@ -87,24 +159,57 @@ export function Step5Media({ formData, updateFormData }: Step5MediaProps) {
                   >
                     <X className="h-4 w-4" />
                   </button>
+                  {/* Photo number indicator */}
+                  <div className="absolute bottom-1 left-1 bg-black/60 text-white text-xs px-1.5 py-0.5 rounded">
+                    {index + 1}
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
-          {/* Tips */}
-          <div className="flex items-start gap-2 text-xs text-muted-foreground bg-muted rounded-lg p-3">
-            <Info className="h-4 w-4 shrink-0 mt-0.5" />
-            <div>
-              <p className="font-medium text-foreground mb-1">Empfohlene Fotos:</p>
-              <ul className="list-disc list-inside space-y-0.5">
-                <li>Gesamtansicht von vorne und hinten</li>
-                <li>Kabine innen (Bedienelemente, Sitz)</li>
-                <li>Typenschild</li>
-                <li>Betriebsstundenzähler</li>
-                <li>Anbaugeräte</li>
-                <li>Eventuelle Schäden</li>
-              </ul>
+          {/* Required Photos Checklist */}
+          <div className="bg-muted rounded-lg p-4">
+            <div className="flex items-start gap-2">
+              <Info className="h-4 w-4 shrink-0 mt-0.5 text-primary" />
+              <div className="text-sm">
+                <p className="font-medium text-foreground mb-2">
+                  Pflichtfotos ({formData.category === "arbeitsbuehne" ? "Arbeitsbühne" : "Bagger"}):
+                </p>
+                <div className="grid grid-cols-2 gap-1">
+                  {requirements.suggestions.map((item, index) => (
+                    <div 
+                      key={item} 
+                      className={cn(
+                        "flex items-center gap-2",
+                        index < formData.images.length 
+                          ? "text-success" 
+                          : "text-muted-foreground"
+                      )}
+                    >
+                      {index < formData.images.length ? (
+                        <CheckCircle2 className="h-3 w-3" />
+                      ) : (
+                        <div className="h-3 w-3 rounded-full border border-current" />
+                      )}
+                      <span>{item}</span>
+                    </div>
+                  ))}
+                </div>
+                
+                {requirements.optional.length > 0 && (
+                  <>
+                    <p className="font-medium text-foreground mt-3 mb-1">
+                      Optionale Fotos:
+                    </p>
+                    <ul className="list-disc list-inside text-muted-foreground space-y-0.5">
+                      {requirements.optional.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>

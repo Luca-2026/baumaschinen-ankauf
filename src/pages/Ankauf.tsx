@@ -32,12 +32,15 @@ const Ankauf = () => {
 
   // Price explanation state removed - price only shown after submission
 
+  // Photo requirements by category
+  const minPhotosRequired = formData.category === "arbeitsbuehne" ? 2 : 5;
+
   // Validation for each step
   const isStep1Valid = formData.category !== "";
   const isStep2Valid = formData.manufacturerId !== "" && (formData.modelId !== "" || (formData.isCustomModel && formData.customModelName !== ""));
   const isStep3Valid = formData.yearBuilt !== null && formData.locationZip.length === 5;
   const isStep4Valid = formData.condition !== "";
-  const isStep5Valid = true; // Media is optional
+  const isStep5Valid = formData.images.length >= minPhotosRequired;
   
   // Step 6: Full validation including email and phone verification
   const emailValidation = validateEmail(formData.contactEmail);
