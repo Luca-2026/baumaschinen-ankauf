@@ -1,8 +1,8 @@
-import { WizardFormData, baggerWeightClasses, arbeitsbuehneWorkingHeights, driveTypes } from "@/types/wizard";
+import { WizardFormData, arbeitsbuehneWorkingHeights, driveTypes } from "@/types/wizard";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MapPin, Info } from "lucide-react";
+import { MapPin, Info, CheckCircle2 } from "lucide-react";
 
 interface Step3BaseDataProps {
   formData: WizardFormData;
@@ -13,14 +13,19 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 30 }, (_, i) => currentYear - i);
   
-  const sizeOptions = formData.category === "bagger" ? baggerWeightClasses : arbeitsbuehneWorkingHeights;
-  const sizeLabel = formData.category === "bagger" ? "Gewichtsklasse" : "Arbeitshöhe";
+  // Only show weight class / working height if no model is selected (for Arbeitsbühne, or custom models)
+  const showSizeSelector = formData.category === "arbeitsbuehne" || formData.isCustomModel;
+  const sizeOptions = arbeitsbuehneWorkingHeights;
+  const sizeLabel = "Arbeitshöhe";
 
   const isNRW = formData.locationZip && 
     (formData.locationZip.startsWith("4") || 
      formData.locationZip.startsWith("5") ||
      formData.locationZip.startsWith("32") ||
      formData.locationZip.startsWith("33"));
+
+  // For Bagger with selected model, show the model info
+  const hasSelectedModel = formData.category === "bagger" && formData.modelName && !formData.isCustomModel;
 
   return (
     <div className="space-y-8">
@@ -32,6 +37,21 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
           Diese Angaben helfen uns bei der Preisberechnung
         </p>
       </div>
+
+      {/* Show selected model info for Bagger */}
+      {hasSelectedModel && (
+        <div className="bg-primary/5 rounded-xl p-4 flex items-center gap-3">
+          <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0" />
+          <div>
+            <p className="font-medium text-headline">
+              {formData.manufacturerName} {formData.modelName}
+            </p>
+            <p className="text-sm text-muted-foreground">
+              Gewichtsklasse und Fahrwerk wurden automatisch erfasst
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="grid gap-6 sm:grid-cols-2">
         {/* Year Built */}
@@ -71,31 +91,29 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
           />
         </div>
 
-        {/* Size (Weight/Height) */}
-        <div>
-          <Label className="text-base font-medium">
-            {sizeLabel}
-          </Label>
-          <Select
-            value={formData.category === "bagger" ? formData.weightClass : formData.workingHeight}
-            onValueChange={(value) => 
-              formData.category === "bagger" 
-                ? updateFormData({ weightClass: value }) 
-                : updateFormData({ workingHeight: value })
-            }
-          >
-            <SelectTrigger className="mt-2">
-              <SelectValue placeholder={`${sizeLabel} wählen`} />
-            </SelectTrigger>
-            <SelectContent>
-              {sizeOptions.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+        {/* Size (Working Height) - only for Arbeitsbühne or custom models */}
+        {showSizeSelector && (
+          <div>
+            <Label className="text-base font-medium">
+              {sizeLabel}
+            </Label>
+            <Select
+              value={formData.workingHeight}
+              onValueChange={(value) => updateFormData({ workingHeight: value })}
+            >
+              <SelectTrigger className="mt-2">
+                <SelectValue placeholder={`${sizeLabel} wählen`} />
+              </SelectTrigger>
+              <SelectContent>
+                {sizeOptions.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        )}
 
         {/* Drive Type */}
         <div>

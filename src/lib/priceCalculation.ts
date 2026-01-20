@@ -1,5 +1,6 @@
 import { WizardFormData } from "@/types/wizard";
 import { supabase } from "@/integrations/supabase/client";
+import { findMachineModel, DEALER_MARGIN } from "@/data/machineData";
 
 export interface PriceRange {
   low: number;
@@ -22,7 +23,7 @@ interface MarketPriceData {
   segment: string;
 }
 
-// Fetch market data for price calculation
+// Fetch market data for price calculation (from database)
 export async function fetchMarketPriceData(
   category: string,
   manufacturer: string,
@@ -53,7 +54,94 @@ export async function fetchMarketPriceData(
   }
 }
 
-// Find best matching market data entry
+// Calculate price based on static machine data (primary method)
+export function calculateStaticMachinePrice(data: WizardFormData): PriceRange | null {
+  if (!data.category || !data.yearBuilt || !data.condition || !data.manufacturerName || !data.modelName) {
+    return null;
+  }
+
+  // Find the machine in our static data
+  const machine = findMachineModel(data.category, data.manufacturerName, data.modelName);
+  
+  if (!machine) {
+    // Fallback to formula if model not found
+    return null;
+  }
+
+  const currentYear = new Date().getFullYear();
+  const age = currentYear - data.yearBuilt;
+  const hours = data.operatingHours || 0;
+
+  // Calculate position between min and max price based on age and condition
+  // Reference: min = 8-10 years old, high hours, ok condition
+  //            max = 1-3 years old, low hours, sehr gut condition
+  
+  let positionFactor = 0.5; // Start in the middle
+
+  // Age factor: newer = higher position
+  if (age <= 2) positionFactor += 0.25;
+  else if (age <= 4) positionFactor += 0.15;
+  else if (age <= 6) positionFactor += 0.05;
+  else if (age <= 8) positionFactor -= 0.05;
+  else if (age <= 10) positionFactor -= 0.15;
+  else positionFactor -= 0.25;
+
+  // Hours factor
+  const avgHoursPerYear = 500; // Typical for construction equipment
+  const expectedHours = age * avgHoursPerYear;
+  const hoursRatio = hours / Math.max(expectedHours, 1);
+  
+  if (hoursRatio < 0.7) positionFactor += 0.10; // Low hours
+  else if (hoursRatio < 1.0) positionFactor += 0.05;
+  else if (hoursRatio > 1.5) positionFactor -= 0.10; // High hours
+  else if (hoursRatio > 1.2) positionFactor -= 0.05;
+
+  // Condition factor
+  const conditionFactors: Record<string, number> = {
+    sehr_gut: 0.15,
+    gut: 0.05,
+    ok: -0.10,
+    reparaturbeduerftig: -0.25,
+  };
+  positionFactor += conditionFactors[data.condition] || 0;
+
+  // Documentation bonus
+  if (data.hasServiceBook) positionFactor += 0.03;
+  if (data.hasUvv) positionFactor += 0.03;
+  if (data.hasCe) positionFactor += 0.02;
+  if (data.hasManual) positionFactor += 0.01;
+
+  // Equipment bonus (max 5%)
+  const equipmentBonus = Math.min((data.equipment?.length || 0) * 0.015, 0.05);
+  positionFactor += equipmentBonus;
+
+  // Damage penalty
+  if (data.hasDamage) positionFactor -= 0.20;
+
+  // Clamp factor between 0 and 1
+  positionFactor = Math.max(0, Math.min(1, positionFactor));
+
+  // Calculate market value (what we would sell for)
+  const priceRange = machine.usedPriceMaxEur - machine.usedPriceMinEur;
+  const marketValue = machine.usedPriceMinEur + (priceRange * positionFactor);
+
+  // Apply dealer margin (15%) - this is what we offer to buy
+  const purchasePrice = marketValue * (1 - DEALER_MARGIN);
+
+  // Create a realistic range around the calculated price (±8%)
+  const low = Math.round((purchasePrice * 0.92) / 100) * 100;
+  const high = Math.round((purchasePrice * 1.08) / 100) * 100;
+
+  return {
+    low,
+    high,
+    mid: Math.round(purchasePrice / 100) * 100,
+    isMarketBased: true,
+    matchedModel: `${machine.manufacturer} ${machine.model}`,
+  };
+}
+
+// Find best matching market data entry (from database)
 function findBestMatch(
   marketData: MarketPriceData[],
   yearBuilt: number,
@@ -61,27 +149,21 @@ function findBestMatch(
 ): MarketPriceData | null {
   if (marketData.length === 0) return null;
   
-  // Score each entry based on similarity
   const scored = marketData.map(entry => {
     let score = 0;
-    
-    // Year similarity (closer is better)
     const yearDiff = Math.abs(entry.reference_year - yearBuilt);
-    score += Math.max(0, 10 - yearDiff); // Up to 10 points for exact year match
+    score += Math.max(0, 10 - yearDiff);
     
-    // Hours similarity if available
     if (operatingHours && entry.hours_min && entry.hours_max) {
       const avgHours = (entry.hours_min + entry.hours_max) / 2;
       const hoursDiff = Math.abs(avgHours - operatingHours);
-      score += Math.max(0, 5 - hoursDiff / 1000); // Up to 5 points
+      score += Math.max(0, 5 - hoursDiff / 1000);
     }
     
     return { entry, score };
   });
   
-  // Sort by score descending
   scored.sort((a, b) => b.score - a.score);
-  
   return scored[0]?.entry || null;
 }
 
@@ -95,17 +177,13 @@ function calculateAdjustmentFactor(
   
   let factor = 1.0;
   
-  // Age difference adjustment
   const ageDifference = actualAge - referenceAge;
   if (ageDifference > 0) {
-    // Older than reference: depreciate
     factor *= Math.pow(0.93, ageDifference);
   } else if (ageDifference < 0) {
-    // Newer than reference: appreciate
     factor *= Math.pow(1.05, Math.abs(ageDifference));
   }
   
-  // Condition factor
   const conditionFactors: Record<string, number> = {
     sehr_gut: 1.15,
     gut: 1.0,
@@ -114,60 +192,66 @@ function calculateAdjustmentFactor(
   };
   factor *= conditionFactors[data.condition] || 1.0;
   
-  // Documentation bonus
   if (data.hasServiceBook) factor += 0.03;
   if (data.hasUvv) factor += 0.03;
   if (data.hasCe) factor += 0.02;
   if (data.hasManual) factor += 0.01;
   
-  // Equipment bonus (max 8%)
   const equipmentBonus = Math.min((data.equipment?.length || 0) * 0.02, 0.08);
   factor += equipmentBonus;
   
-  // Damage penalty
   if (data.hasDamage) factor *= 0.80;
   
   return factor;
 }
 
-// Calculate reference price using market data
+// Main price calculation function
 export async function calculateMarketBasedPrice(
   data: WizardFormData
 ): Promise<PriceRange | null> {
-  if (!data.category || !data.yearBuilt || !data.condition || !data.manufacturerName) {
+  if (!data.category || !data.yearBuilt || !data.condition) {
     return null;
   }
-  
-  // Try to fetch market data
-  const marketData = await fetchMarketPriceData(
-    data.category,
-    data.manufacturerName,
-    data.modelName
-  );
-  
-  if (marketData.length > 0) {
-    // Find best matching entry
-    const bestMatch = findBestMatch(marketData, data.yearBuilt, data.operatingHours);
+
+  // First try: Use static machine data (most accurate)
+  if (data.manufacturerName && data.modelName) {
+    const staticPrice = calculateStaticMachinePrice(data);
+    if (staticPrice) {
+      return staticPrice;
+    }
+  }
+
+  // Second try: Use database market data
+  if (data.manufacturerName) {
+    const marketData = await fetchMarketPriceData(
+      data.category,
+      data.manufacturerName,
+      data.modelName
+    );
     
-    if (bestMatch) {
-      const adjustmentFactor = calculateAdjustmentFactor(data, bestMatch.age_years);
+    if (marketData.length > 0) {
+      const bestMatch = findBestMatch(marketData, data.yearBuilt, data.operatingHours);
       
-      // Calculate adjusted prices
-      const adjustedLow = bestMatch.price_min_eur * adjustmentFactor;
-      const adjustedHigh = bestMatch.price_max_eur * adjustmentFactor;
-      const adjustedMid = bestMatch.price_mid_eur * adjustmentFactor;
-      
-      return {
-        low: Math.round(adjustedLow / 100) * 100,
-        high: Math.round(adjustedHigh / 100) * 100,
-        mid: Math.round(adjustedMid / 100) * 100,
-        isMarketBased: true,
-        matchedModel: `${bestMatch.manufacturer} ${bestMatch.model}`,
-      };
+      if (bestMatch) {
+        const adjustmentFactor = calculateAdjustmentFactor(data, bestMatch.age_years);
+        
+        // Apply dealer margin to database prices too
+        const adjustedLow = bestMatch.price_min_eur * adjustmentFactor * (1 - DEALER_MARGIN);
+        const adjustedHigh = bestMatch.price_max_eur * adjustmentFactor * (1 - DEALER_MARGIN);
+        const adjustedMid = bestMatch.price_mid_eur * adjustmentFactor * (1 - DEALER_MARGIN);
+        
+        return {
+          low: Math.round(adjustedLow / 100) * 100,
+          high: Math.round(adjustedHigh / 100) * 100,
+          mid: Math.round(adjustedMid / 100) * 100,
+          isMarketBased: true,
+          matchedModel: `${bestMatch.manufacturer} ${bestMatch.model}`,
+        };
+      }
     }
   }
   
-  // Fallback to formula-based calculation if no market data
+  // Fallback to formula-based calculation
   return calculateReferencePrice(data);
 }
 
@@ -180,6 +264,14 @@ export function calculateReferencePrice(data: WizardFormData): PriceRange | null
   // Base values by category and size
   const baseValues: Record<string, Record<string, number>> = {
     bagger: {
+      minibagger_1_3t: 25000,
+      minibagger_3_6t: 45000,
+      kettenbagger_6_10t: 75000,
+      kettenbagger_10_16t: 120000,
+      kettenbagger_18_26t: 180000,
+      kettenbagger_27_40t: 260000,
+      mobilbagger_10_21t: 150000,
+      // Legacy keys for backward compatibility
       mini_bis_3t: 25000,
       mini_3_6t: 45000,
       midi_6_15t: 75000,
@@ -195,44 +287,46 @@ export function calculateReferencePrice(data: WizardFormData): PriceRange | null
     },
   };
 
-  // Get base value
-  const sizeKey = data.category === 'bagger' ? data.weightClass : data.workingHeight;
+  // Get base value - try subcategory first, then weight/height class
+  let baseValue = 50000;
   const categoryBaseValues = baseValues[data.category];
-  let baseValue = categoryBaseValues?.[sizeKey] || 50000;
+  
+  if (categoryBaseValues) {
+    if (data.subcategory && categoryBaseValues[data.subcategory]) {
+      baseValue = categoryBaseValues[data.subcategory];
+    } else {
+      const sizeKey = data.category === 'bagger' ? data.weightClass : data.workingHeight;
+      if (sizeKey && categoryBaseValues[sizeKey]) {
+        baseValue = categoryBaseValues[sizeKey];
+      }
+    }
+  }
 
   // Age factor
   const currentYear = new Date().getFullYear();
   const age = currentYear - (data.yearBuilt || currentYear);
   let ageFactor = 1.0;
-  if (age <= 2) ageFactor = data.category === 'bagger' ? 0.95 : 0.92;
-  else if (age <= 5) ageFactor = data.category === 'bagger' ? 0.85 : 0.80;
-  else if (age <= 10) ageFactor = data.category === 'bagger' ? 0.70 : 0.65;
-  else if (age <= 15) ageFactor = data.category === 'bagger' ? 0.55 : 0.50;
-  else ageFactor = data.category === 'bagger' ? 0.40 : 0.35;
+  if (age <= 2) ageFactor = 0.95;
+  else if (age <= 5) ageFactor = 0.85;
+  else if (age <= 10) ageFactor = 0.70;
+  else if (age <= 15) ageFactor = 0.55;
+  else ageFactor = 0.40;
 
   // Hours factor
   const hours = data.operatingHours || 0;
   let hoursFactor = 1.0;
-  if (data.category === 'bagger') {
-    if (hours <= 2000) hoursFactor = 1.0;
-    else if (hours <= 4000) hoursFactor = 0.90;
-    else if (hours <= 6000) hoursFactor = 0.80;
-    else if (hours <= 10000) hoursFactor = 0.65;
-    else hoursFactor = 0.50;
-  } else {
-    if (hours <= 1000) hoursFactor = 1.0;
-    else if (hours <= 2000) hoursFactor = 0.90;
-    else if (hours <= 4000) hoursFactor = 0.80;
-    else if (hours <= 6000) hoursFactor = 0.65;
-    else hoursFactor = 0.50;
-  }
+  if (hours <= 2000) hoursFactor = 1.0;
+  else if (hours <= 4000) hoursFactor = 0.90;
+  else if (hours <= 6000) hoursFactor = 0.80;
+  else if (hours <= 10000) hoursFactor = 0.65;
+  else hoursFactor = 0.50;
 
   // Condition factor
   const conditionFactors: Record<string, number> = {
     sehr_gut: 1.10,
     gut: 1.0,
     ok: 0.85,
-    reparaturbeduerftig: data.category === 'bagger' ? 0.60 : 0.55,
+    reparaturbeduerftig: 0.60,
   };
   const conditionFactor = conditionFactors[data.condition] || 1.0;
 
@@ -250,13 +344,16 @@ export function calculateReferencePrice(data: WizardFormData): PriceRange | null
   // Damage penalty
   const damagePenalty = data.hasDamage ? 0.85 : 1.0;
 
-  // Calculate final price
-  const calculatedPrice = baseValue * ageFactor * hoursFactor * conditionFactor * docBonus * (1 + equipmentBonus) * damagePenalty;
+  // Calculate market value
+  const marketValue = baseValue * ageFactor * hoursFactor * conditionFactor * docBonus * (1 + equipmentBonus) * damagePenalty;
+
+  // Apply dealer margin (15%)
+  const purchasePrice = marketValue * (1 - DEALER_MARGIN);
 
   // Return range (±10%)
   return {
-    low: Math.round(calculatedPrice * 0.90 / 100) * 100,
-    high: Math.round(calculatedPrice * 1.10 / 100) * 100,
+    low: Math.round(purchasePrice * 0.90 / 100) * 100,
+    high: Math.round(purchasePrice * 1.10 / 100) * 100,
     isMarketBased: false,
   };
 }
