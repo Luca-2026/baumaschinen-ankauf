@@ -26,7 +26,7 @@ export function HeroSection() {
           {/* Left Column - Content */}
           <div className="max-w-xl animate-fade-in">
             <h1 className="text-4xl font-bold tracking-tight text-headline md:text-5xl lg:text-6xl">Baumaschinen verkaufen war noch nie so einfach!
-In wenigen Schritten zum Ankaufspreis
+In wenigen Schritten zum Ankaufspreis.
             <span className="block text-primary mt-2">
                 In wenigen Schritten zum Ankaufspreis
               </span>
