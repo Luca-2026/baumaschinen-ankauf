@@ -53,14 +53,7 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
               : "border-border bg-card hover:border-primary/50"
           )}
         >
-          <div
-            className={cn(
-              "flex h-24 w-24 items-center justify-center rounded-full transition-colors",
-              formData.category === "bagger" ? "bg-primary/20" : "bg-muted"
-            )}
-          >
-            <MachineIcon type="bagger" size="xl" />
-          </div>
+          <MachineIcon type="bagger" size="2xl" />
           <span className="text-xl font-semibold text-headline">Bagger</span>
           <span className="text-sm text-muted-foreground text-center">
             Mini-, Midi-, Ketten-, Mobilbagger und mehr
@@ -82,14 +75,7 @@ export function Step1Category({ formData, updateFormData, onNext }: Step1Categor
               : "border-border bg-card hover:border-primary/50"
           )}
         >
-          <div
-            className={cn(
-              "flex h-24 w-24 items-center justify-center rounded-full transition-colors",
-              formData.category === "arbeitsbuehne" ? "bg-primary/20" : "bg-muted"
-            )}
-          >
-            <MachineIcon type="arbeitsbuehne" size="xl" />
-          </div>
+          <MachineIcon type="arbeitsbuehne" size="2xl" />
           <span className="text-xl font-semibold text-headline">Arbeitsbühne</span>
           <span className="text-sm text-muted-foreground text-center">
             Scheren-, Gelenk-, Teleskopbühnen und mehr

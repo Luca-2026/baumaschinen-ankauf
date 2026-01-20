@@ -90,9 +90,7 @@ export function MachineCategoriesSection() {
           {/* Types */}
           <div className="rounded-2xl border bg-card p-8">
             <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10">
-                <MachineIcon type={activeTab === "bagger" ? "bagger" : "arbeitsbuehne"} size="md" />
-              </div>
+              <MachineIcon type={activeTab === "bagger" ? "bagger" : "arbeitsbuehne"} size="lg" />
               <h3 className="text-xl font-semibold text-headline">
                 {activeCategory.title} Typen
               </h3>

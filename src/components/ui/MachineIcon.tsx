@@ -4,7 +4,7 @@ import arbeitsbuehneIcon from "@/assets/icons/icon-arbeitsbuehne.png";
 
 interface MachineIconProps {
   type: "bagger" | "arbeitsbuehne";
-  size?: "sm" | "md" | "lg" | "xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl";
   className?: string;
 }
 
@@ -13,6 +13,7 @@ const sizeClasses = {
   md: "h-6 w-6",
   lg: "h-10 w-10",
   xl: "h-16 w-16",
+  "2xl": "h-24 w-24",
 };
 
 export function MachineIcon({ type, size = "md", className }: MachineIconProps) {
