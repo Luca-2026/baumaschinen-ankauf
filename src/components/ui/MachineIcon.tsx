@@ -4,16 +4,18 @@ import arbeitsbuehneIcon from "@/assets/icons/icon-arbeitsbuehne.png";
 
 interface MachineIconProps {
   type: "bagger" | "arbeitsbuehne";
-  size?: "sm" | "md" | "lg" | "xl" | "2xl";
+  size?: "sm" | "md" | "lg" | "xl" | "2xl" | "3xl" | "4xl";
   className?: string;
 }
 
 const sizeClasses = {
-  sm: "h-4 w-4",
-  md: "h-6 w-6",
-  lg: "h-10 w-10",
-  xl: "h-16 w-16",
-  "2xl": "h-24 w-24",
+  sm: "h-5 w-5",
+  md: "h-8 w-8",
+  lg: "h-12 w-12",
+  xl: "h-20 w-20",
+  "2xl": "h-28 w-28",
+  "3xl": "h-36 w-36",
+  "4xl": "h-48 w-48",
 };
 
 export function MachineIcon({ type, size = "md", className }: MachineIconProps) {
