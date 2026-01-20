@@ -57,29 +57,29 @@ export function MachineCategoriesSection() {
 
         {/* Tabs */}
         <div className="flex justify-center mb-12">
-          <div className="inline-flex rounded-lg border bg-muted p-1">
+          <div className="inline-flex rounded-lg border bg-white p-1 shadow-sm">
             <button
               onClick={() => setActiveTab("bagger")}
               className={cn(
-                "flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all duration-300",
+                "flex items-center gap-3 px-6 py-3 rounded-md text-sm font-medium transition-all duration-300",
                 activeTab === "bagger"
-                  ? "bg-card text-headline shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
-              <MachineIcon type="bagger" size="sm" />
+              <MachineIcon type="bagger" size="lg" />
               Bagger
             </button>
             <button
               onClick={() => setActiveTab("arbeitsbuehnen")}
               className={cn(
-                "flex items-center gap-2 px-6 py-3 rounded-md text-sm font-medium transition-all duration-300",
+                "flex items-center gap-3 px-6 py-3 rounded-md text-sm font-medium transition-all duration-300",
                 activeTab === "arbeitsbuehnen"
-                  ? "bg-card text-headline shadow-sm"
-                  : "text-muted-foreground hover:text-foreground"
+                  ? "bg-primary text-primary-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
               )}
             >
-              <MachineIcon type="arbeitsbuehne" size="sm" />
+              <MachineIcon type="arbeitsbuehne" size="lg" />
               Arbeitsbühnen
             </button>
           </div>

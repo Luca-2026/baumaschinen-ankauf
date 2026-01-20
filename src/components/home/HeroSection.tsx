@@ -70,7 +70,7 @@ export function HeroSection() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-primary text-primary hover:bg-primary/5 h-14 px-8"
+                className="border-2 border-primary bg-white text-primary hover:bg-primary hover:text-primary-foreground h-14 px-8 font-semibold"
               >
                 <Link to="/so-funktionierts">So funktioniert's</Link>
               </Button>
