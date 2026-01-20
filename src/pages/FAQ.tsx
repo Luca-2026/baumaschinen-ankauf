@@ -168,7 +168,7 @@ export default function FAQ() {
                 size="lg"
                 className="border-2 border-white bg-transparent text-white hover:bg-white hover:text-primary h-14 px-8 font-semibold"
               >
-                <a href="tel:+492151XXXXXX">
+              <a href="tel:+4921514179904">
                   <Phone className="mr-2 h-5 w-5" />
                   Anrufen
                 </a>

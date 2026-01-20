@@ -24,8 +24,8 @@ export default function Impressum() {
                 Kontakt
               </h2>
               <p className="text-foreground mb-4">
-                Telefon: +49 2151 XXXXXX<br />
-                E-Mail: info@slt-baumaschinen.de
+                Telefon: +49 2151 417 990 4<br />
+                E-Mail: info@wirkaufendeinebaumaschinen.de
               </p>
 
               <h2 className="text-2xl font-semibold text-headline mt-8 mb-4">
