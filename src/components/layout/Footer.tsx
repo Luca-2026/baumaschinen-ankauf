@@ -134,6 +134,19 @@ export function Footer() {
                 Kontakt
               </Link>
             </nav>
+
+            {/* Local SEO Links */}
+            <h3 className="font-semibold mt-6 mb-3 text-primary-foreground">Ankauf nach Stadt</h3>
+            <nav className="grid grid-cols-2 gap-x-4 gap-y-1">
+              <Link to="/bagger-verkaufen-duesseldorf" className="text-sm text-primary-foreground/80 hover:text-accent transition-colors">Düsseldorf</Link>
+              <Link to="/bagger-verkaufen-koeln" className="text-sm text-primary-foreground/80 hover:text-accent transition-colors">Köln</Link>
+              <Link to="/bagger-verkaufen-dortmund" className="text-sm text-primary-foreground/80 hover:text-accent transition-colors">Dortmund</Link>
+              <Link to="/bagger-verkaufen-essen" className="text-sm text-primary-foreground/80 hover:text-accent transition-colors">Essen</Link>
+              <Link to="/bagger-verkaufen-duisburg" className="text-sm text-primary-foreground/80 hover:text-accent transition-colors">Duisburg</Link>
+              <Link to="/bagger-verkaufen-bochum" className="text-sm text-primary-foreground/80 hover:text-accent transition-colors">Bochum</Link>
+              <Link to="/bagger-verkaufen-muenster" className="text-sm text-primary-foreground/80 hover:text-accent transition-colors">Münster</Link>
+              <Link to="/bagger-verkaufen-bonn" className="text-sm text-primary-foreground/80 hover:text-accent transition-colors">Bonn</Link>
+            </nav>
           </div>
 
           {/* Neumaschinen Link & Legal */}
