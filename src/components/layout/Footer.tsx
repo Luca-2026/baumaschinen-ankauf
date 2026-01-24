@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail, ExternalLink } from "lucide-react";
+import { BrandName } from "@/components/ui/BrandName";
 
 const locations = [
   {
@@ -48,13 +49,7 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <div className="mb-4">
-              <span className="text-lg font-bold">
-                <span className="text-primary-foreground">wir</span>
-                <span className="text-accent">kaufen</span>
-                <span className="text-primary-foreground">deine</span>
-                <span className="text-accent">baumaschinen</span>
-                <span className="text-primary-foreground">.de</span>
-              </span>
+              <BrandName variant="light" className="text-lg" />
             </div>
             <p className="text-sm text-primary-foreground/80 mb-4">
               Ein Service der SLT Technology Group GmbH & Co. KG

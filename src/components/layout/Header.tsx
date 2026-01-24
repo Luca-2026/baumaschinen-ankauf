@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Menu, X, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { BrandName } from "@/components/ui/BrandName";
 
 const navItems = [
   { label: "Ankauf-Check", href: "/ankauf" },
@@ -23,13 +24,7 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         {/* Logo */}
         <Link to="/" className="flex items-center">
-          <span className="text-lg font-bold">
-            <span className="text-primary">wir</span>
-            <span className="text-accent">kaufen</span>
-            <span className="text-primary">deine</span>
-            <span className="text-accent">baumaschinen</span>
-            <span className="text-primary">.de</span>
-          </span>
+          <BrandName className="text-lg" />
         </Link>
 
         {/* Desktop Navigation */}

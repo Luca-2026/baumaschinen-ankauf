@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { BadgeCheck, Clock, Truck, FileCheck, ExternalLink } from "lucide-react";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { TrustBadge } from "@/components/ui/TrustBadge";
+import { BrandName } from "@/components/ui/BrandName";
 
 const reasons = [
   {
@@ -37,7 +38,7 @@ export function WhySLTSection() {
           transition={{ duration: 0.6, ease: "easeOut" }}
         >
           <SectionHeading
-            title="Warum bei wirkaufendeinebaumaschinen.de verkaufen?"
+            title={<>Warum bei <BrandName /> verkaufen?</>}
             subtitle="4 Gründe, warum du an uns verkaufen solltest"
           />
         </motion.div>
