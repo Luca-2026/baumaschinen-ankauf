@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 import { 
   Calculator, 
   Percent, 
@@ -72,6 +73,7 @@ const options = [
 export default function Finanzierung() {
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.finanzierung} />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-16 md:py-24">
         <div className="container">

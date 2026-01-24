@@ -1,9 +1,11 @@
 import { Layout } from "@/components/layout/Layout";
 import { Phone, Mail, Printer } from "lucide-react";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 
 export default function Impressum() {
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.impressum} />
       <section className="py-10 sm:py-16 md:py-24">
         <div className="container px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">

@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { Link } from "react-router-dom";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 import { 
   Phone, 
   Mail, 
@@ -89,6 +90,7 @@ export default function Kontakt() {
   if (isSubmitted) {
     return (
       <Layout>
+        <SEOHead {...SEO_CONFIG.kontakt} />
         <section className="py-24">
           <div className="container">
             <div className="max-w-lg mx-auto text-center">
@@ -118,6 +120,7 @@ export default function Kontakt() {
 
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.kontakt} />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-16 md:py-20">
         <div className="container">

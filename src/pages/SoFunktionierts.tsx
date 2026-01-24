@@ -2,6 +2,7 @@ import { Layout } from "@/components/layout/Layout";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 import { 
   ClipboardList, 
   Calculator, 
@@ -57,6 +58,7 @@ const steps = [
 export default function SoFunktionierts() {
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.soFunktionierts} />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-16 md:py-24">
         <div className="container">

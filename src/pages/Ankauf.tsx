@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight, Loader2, Calculator } from "lucide-react";
 import { validateEmail, validatePhone } from "@/lib/emailValidation";
 import { cn } from "@/lib/utils";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 
 const Ankauf = () => {
   const {
@@ -73,6 +74,7 @@ const Ankauf = () => {
   if (isSubmitted) {
     return (
       <Layout>
+        <SEOHead {...SEO_CONFIG.ankauf} />
         <div className="bg-background-muted min-h-[calc(100vh-4rem)]">
           <div className="container py-12">
             <div className="max-w-2xl mx-auto bg-card rounded-2xl shadow-lg p-8">
@@ -90,6 +92,13 @@ const Ankauf = () => {
 
   return (
     <Layout>
+      <SEOHead 
+        {...(formData.category === "bagger" 
+          ? SEO_CONFIG.ankaufBagger 
+          : formData.category === "arbeitsbuehne" 
+            ? SEO_CONFIG.ankaufArbeitsbuehne 
+            : SEO_CONFIG.ankauf)} 
+      />
       <div className="bg-background-muted min-h-[calc(100vh-4rem)]">
         <div className="container py-8 md:py-12">
           <div className="grid gap-8 lg:grid-cols-3">

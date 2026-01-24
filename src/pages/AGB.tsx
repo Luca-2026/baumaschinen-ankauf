@@ -1,8 +1,10 @@
 import { Layout } from "@/components/layout/Layout";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 
 export default function AGB() {
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.agb} />
       <section className="py-10 sm:py-16 md:py-24">
         <div className="container px-4 sm:px-6">
           <div className="max-w-3xl mx-auto">
