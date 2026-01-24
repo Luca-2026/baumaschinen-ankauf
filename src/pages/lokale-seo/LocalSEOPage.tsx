@@ -208,7 +208,7 @@ export function LocalSEOPage({
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => (
-              <AnimatedSection key={index} animation="fadeInUp" delay={index * 100}>
+              <AnimatedSection key={index} animation="fadeInUp" delay={index * 0.1}>
                 <div className="bg-card border border-border rounded-xl p-6 h-full hover:shadow-lg transition-shadow">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <benefit.icon className="h-6 w-6 text-primary" />
@@ -237,7 +237,7 @@ export function LocalSEOPage({
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {machineTypes.map((type, index) => (
-              <AnimatedSection key={index} animation="fadeInUp" delay={index * 50}>
+              <AnimatedSection key={index} animation="fadeInUp" delay={index * 0.05}>
                 <div className="bg-card border border-border rounded-lg p-4 text-center hover:border-primary transition-colors">
                   <CheckCircle className="h-5 w-5 text-primary mx-auto mb-2" />
                   <span className="font-medium text-sm">{type}</span>
@@ -274,7 +274,7 @@ export function LocalSEOPage({
               </div>
             </AnimatedSection>
 
-            <AnimatedSection animation="fadeInUp" delay={200}>
+            <AnimatedSection animation="fadeInUp" delay={0.2}>
               <div className="bg-card border border-border rounded-xl p-6">
                 <h3 className="font-semibold text-lg mb-4">Unser Einzugsgebiet</h3>
                 
