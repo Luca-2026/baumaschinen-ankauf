@@ -5,10 +5,12 @@ import { MachineCategoriesSection } from "@/components/home/MachineCategoriesSec
 import { WhySLTSection } from "@/components/home/WhySLTSection";
 import { UsedMachinesTeaser } from "@/components/home/UsedMachinesTeaser";
 import { CTASection } from "@/components/home/CTASection";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 
 const Index = () => {
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.home} />
       <HeroSection />
       <HowItWorksSection />
       <MachineCategoriesSection />

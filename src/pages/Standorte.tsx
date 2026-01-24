@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/button";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 import { 
   MapPin, 
   Phone, 
@@ -52,6 +53,7 @@ const locations = [
 export default function Standorte() {
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.standorte} />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-16 md:py-24">
         <div className="container">

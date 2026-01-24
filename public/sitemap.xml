@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Startseite -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://wirkaufendeinebaumaschinen.de/og-image.jpg</image:loc>
+      <image:title>Bagger und Arbeitsbühne verkaufen - wirkaufendeinebaumaschinen.de</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Ankauf-Wizard (Hauptkonversion) -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/ankauf</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
+  <!-- Bagger Ankauf -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/ankauf/bagger</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Arbeitsbühnen Ankauf -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/ankauf/arbeitsbuehne</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- So funktioniert's -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/so-funktionierts</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Gebrauchtmaschinen -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/gebrauchtmaschinen</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <!-- Standorte -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/standorte</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Finanzierung -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/finanzierung</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- FAQ -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/faq</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Kontakt -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/kontakt</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <!-- Rechtliche Seiten -->
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/impressum</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/datenschutz</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <url>
+    <loc>https://wirkaufendeinebaumaschinen.de/agb</loc>
+    <lastmod>2026-01-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+</urlset>

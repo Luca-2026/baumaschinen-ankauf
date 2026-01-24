@@ -1,8 +1,34 @@
+# Robots.txt für wirkaufendeinebaumaschinen.de
+# Letzte Aktualisierung: 2026-01-24
+
+# Alle Crawler erlauben
+User-agent: *
+Allow: /
+
+# Wichtige Seiten explizit erlauben
+Allow: /ankauf
+Allow: /so-funktionierts
+Allow: /gebrauchtmaschinen
+Allow: /standorte
+Allow: /finanzierung
+Allow: /faq
+Allow: /kontakt
+
+# Admin-Bereich ausschließen
+Disallow: /admin
+Disallow: /admin/*
+
+# Sitemap-Verweis
+Sitemap: https://wirkaufendeinebaumaschinen.de/sitemap.xml
+
+# Spezifische Crawler
 User-agent: Googlebot
 Allow: /
+Crawl-delay: 1
 
 User-agent: Bingbot
 Allow: /
+Crawl-delay: 2
 
 User-agent: Twitterbot
 Allow: /
@@ -10,5 +36,18 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
+User-agent: LinkedInBot
 Allow: /
+
+# Bösartige Bots blockieren
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/accordion";
 import { Link } from "react-router-dom";
 import { ArrowRight, HelpCircle, Phone } from "lucide-react";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 
 const faqCategories = [
   {
@@ -92,6 +93,7 @@ const faqCategories = [
 export default function FAQ() {
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.faq} />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-16 md:py-24">
         <div className="container">

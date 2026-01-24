@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { MachineIcon } from "@/components/ui/MachineIcon";
 import { MachineImageSlider } from "@/components/machines/MachineImageSlider";
 import { MachineDetailModal } from "@/components/machines/MachineDetailModal";
+import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
 import { 
   Calendar, 
   Gauge, 
@@ -100,6 +101,7 @@ export default function Gebrauchtmaschinen() {
 
   return (
     <Layout>
+      <SEOHead {...SEO_CONFIG.gebrauchtmaschinen} />
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-primary/5 via-background to-accent/5 py-10 sm:py-16 md:py-20">
         <div className="container px-4 sm:px-6">
