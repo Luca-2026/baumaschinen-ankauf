@@ -85,8 +85,13 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             {/* Logo */}
             <div className="p-6 border-b border-primary-foreground/20">
               <Link to="/" className="block">
-                <span className="text-lg font-bold">wirkaufendeine</span>
-                <span className="text-lg font-bold text-accent">baumaschinen</span>
+                <span className="text-lg font-bold">
+                  <span className="text-primary-foreground">wir</span>
+                  <span className="text-accent">kaufen</span>
+                  <span className="text-primary-foreground">deine</span>
+                  <span className="text-accent">baumaschinen</span>
+                  <span className="text-primary-foreground">.de</span>
+                </span>
               </Link>
               <p className="text-xs text-primary-foreground/60 mt-1">Admin Panel</p>
             </div>

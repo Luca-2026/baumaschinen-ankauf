@@ -1,6 +1,7 @@
 import { Layout } from "@/components/layout/Layout";
 import { Phone, Mail, Printer } from "lucide-react";
 import { SEOHead, SEO_CONFIG } from "@/components/SEOHead";
+import { BrandName } from "@/components/ui/BrandName";
 
 export default function Impressum() {
   return (
@@ -20,7 +21,7 @@ export default function Impressum() {
                   Angaben gemäß § 5 TMG
                 </h2>
                 <p className="text-sm sm:text-base text-foreground mb-4">
-                  wirkaufendeinebaumaschinen.de ist ein Service der
+                  <BrandName className="text-base" /> ist ein Service der
                 </p>
                 <div className="bg-muted rounded-xl p-4 sm:p-6">
                   <p className="text-sm sm:text-base text-foreground font-semibold mb-2">
