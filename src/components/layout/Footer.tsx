@@ -48,8 +48,13 @@ export function Footer() {
           {/* Company Info */}
           <div>
             <div className="mb-4">
-              <span className="text-lg font-bold">wirkaufendeine</span>
-              <span className="text-lg font-bold text-accent">baumaschinen</span>
+              <span className="text-lg font-bold">
+                <span className="text-primary-foreground">wir</span>
+                <span className="text-accent">kaufen</span>
+                <span className="text-primary-foreground">deine</span>
+                <span className="text-accent">baumaschinen</span>
+                <span className="text-primary-foreground">.de</span>
+              </span>
             </div>
             <p className="text-sm text-primary-foreground/80 mb-4">
               Ein Service der SLT Technology Group GmbH & Co. KG
