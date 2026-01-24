@@ -33,7 +33,7 @@ async function sendEmail(to: string[], subject: string, html: string) {
       Authorization: `Bearer ${RESEND_API_KEY}`,
     },
     body: JSON.stringify({
-      from: "wirkaufendeinebaumaschinen.de <onboarding@resend.dev>",
+      from: "Baumaschinen Ankauf <ankauf@wirkaufendeinebaumaschinen.de>",
       to,
       subject,
       html,
@@ -67,7 +67,7 @@ const handler = async (req: Request): Promise<Response> => {
       .eq("key", "lead_notification_email")
       .maybeSingle();
 
-    const notificationEmail = settingsData?.value || "info@wirkaufendeinebaumaschinen.de";
+    const notificationEmail = settingsData?.value || "ankauf@wirkaufendeinebaumaschinen.de";
 
     const leadData: LeadNotificationRequest = await req.json();
     console.log("Lead data received:", leadData);
