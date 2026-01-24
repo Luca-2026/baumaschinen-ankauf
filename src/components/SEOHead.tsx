@@ -10,7 +10,7 @@ interface SEOHeadProps {
   noIndex?: boolean;
 }
 
-const BASE_URL = "https://wirkaufendeinebaumaschinen.de";
+const BASE_URL = "https://www.wirkaufendeinebaumaschinen.de";
 const DEFAULT_OG_IMAGE = `${BASE_URL}/og-image.jpg`;
 
 export function SEOHead({

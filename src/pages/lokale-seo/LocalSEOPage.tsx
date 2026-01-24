@@ -23,10 +23,10 @@ function generateLocalBusinessSchema(city: string, region: string, canonicalPath
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": `https://wirkaufendeinebaumaschinen.de${canonicalPath}#localbusiness`,
+    "@id": `https://www.wirkaufendeinebaumaschinen.de${canonicalPath}#localbusiness`,
     "name": `Baumaschinen Ankauf ${city} - wirkaufendeinebaumaschinen.de`,
     "description": description,
-    "url": `https://wirkaufendeinebaumaschinen.de${canonicalPath}`,
+    "url": `https://www.wirkaufendeinebaumaschinen.de${canonicalPath}`,
     "telephone": "+49 2151 3766600",
     "email": "info@wirkaufendeinebaumaschinen.de",
     "areaServed": {
@@ -50,7 +50,7 @@ function generateLocalBusinessSchema(city: string, region: string, canonicalPath
     "parentOrganization": {
       "@type": "Organization",
       "name": "SLT Technology Group GmbH & Co. KG",
-      "url": "https://wirkaufendeinebaumaschinen.de"
+      "url": "https://www.wirkaufendeinebaumaschinen.de"
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
