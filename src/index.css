@@ -128,7 +128,12 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply text-headline font-semibold tracking-tight;
+    @apply font-semibold tracking-tight;
+    color: inherit;
+  }
+  
+  /* Default headline color - can be overridden by parent text color classes */
+  :where(h1, h2, h3, h4, h5, h6):not([class*="text-"]) {
     color: hsl(var(--headline));
   }
 }
