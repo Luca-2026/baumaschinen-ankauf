@@ -264,6 +264,12 @@ export async function calculateMarketBasedPrice(
     }
   }
   
+  // For custom models (manually entered), don't show estimated price
+  // Users must submit to get a manual evaluation
+  if (data.isCustomModel) {
+    return null;
+  }
+  
   // Fallback to formula-based calculation
   return calculateReferencePrice(data);
 }

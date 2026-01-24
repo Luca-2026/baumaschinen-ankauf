@@ -208,15 +208,19 @@ export function Step3BaseData({ formData, updateFormData }: Step3BaseDataProps) 
         {/* Serial Number */}
         <div>
           <Label htmlFor="serialNumber" className="text-base font-medium">
-            Seriennummer (optional)
+            Seriennummer *
           </Label>
           <Input
             id="serialNumber"
-            placeholder="Seriennummer"
+            placeholder="Seriennummer eingeben"
             className="mt-2"
             value={formData.serialNumber}
             onChange={(e) => updateFormData({ serialNumber: e.target.value })}
+            required
           />
+          <p className="text-xs text-muted-foreground mt-1">
+            Die Seriennummer finden Sie am Typenschild der Maschine
+          </p>
         </div>
 
         {/* Location ZIP */}
