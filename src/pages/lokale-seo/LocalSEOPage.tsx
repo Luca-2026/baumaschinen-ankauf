@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { MapPin, Phone, CheckCircle, Truck, Euro, Clock, ArrowRight } from "lucide-react";
 import { AnimatedSection } from "@/components/ui/AnimatedSection";
+import { useEffect } from "react";
 
 interface LocalSEOPageProps {
   city: string;
@@ -17,6 +18,72 @@ interface LocalSEOPageProps {
   canonicalPath: string;
 }
 
+// Generate LocalBusiness JSON-LD for a specific city
+function generateLocalBusinessSchema(city: string, region: string, canonicalPath: string, description: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": `https://wirkaufendeinebaumaschinen.de${canonicalPath}#localbusiness`,
+    "name": `Baumaschinen Ankauf ${city} - wirkaufendeinebaumaschinen.de`,
+    "description": description,
+    "url": `https://wirkaufendeinebaumaschinen.de${canonicalPath}`,
+    "telephone": "+49 2151 3766600",
+    "email": "info@wirkaufendeinebaumaschinen.de",
+    "areaServed": {
+      "@type": "City",
+      "name": city,
+      "containedInPlace": {
+        "@type": "AdministrativeArea",
+        "name": region
+      }
+    },
+    "serviceType": ["Baumaschinen Ankauf", "Bagger Ankauf", "Arbeitsbühnen Ankauf"],
+    "priceRange": "€€€",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "08:00",
+        "closes": "17:00"
+      }
+    ],
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "SLT Technology Group GmbH & Co. KG",
+      "url": "https://wirkaufendeinebaumaschinen.de"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": `Baumaschinen Ankauf in ${city}`,
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": `Bagger verkaufen in ${city}`,
+            "description": `Wir kaufen Ihren Bagger in ${city} zu fairen Preisen mit kostenloser Abholung.`
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": `Arbeitsbühne verkaufen in ${city}`,
+            "description": `Wir kaufen Ihre Arbeitsbühne in ${city} zu fairen Preisen mit kostenloser Abholung.`
+          }
+        }
+      ]
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "127",
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  };
+}
+
 export function LocalSEOPage({
   city,
   region = "NRW",
@@ -28,6 +95,28 @@ export function LocalSEOPage({
   seoKeywords,
   canonicalPath,
 }: LocalSEOPageProps) {
+  // Inject LocalBusiness JSON-LD structured data
+  useEffect(() => {
+    const schema = generateLocalBusinessSchema(city, region, canonicalPath, description);
+    
+    // Remove existing local business schema if present
+    const existingScript = document.querySelector('script[data-local-business]');
+    if (existingScript) {
+      existingScript.remove();
+    }
+    
+    // Add new schema
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.setAttribute('data-local-business', 'true');
+    script.textContent = JSON.stringify(schema);
+    document.head.appendChild(script);
+    
+    return () => {
+      script.remove();
+    };
+  }, [city, region, canonicalPath, description]);
+
   const benefits = [
     {
       icon: Euro,
