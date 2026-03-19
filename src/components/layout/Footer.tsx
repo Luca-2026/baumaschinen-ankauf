@@ -128,6 +128,12 @@ export function Footer() {
                 Finanzierung
               </Link>
               <Link
+                to="/ratgeber"
+                className="block text-sm text-primary-foreground/80 hover:text-accent transition-colors"
+              >
+                Ratgeber
+              </Link>
+              <Link
                 to="/faq"
                 className="block text-sm text-primary-foreground/80 hover:text-accent transition-colors"
               >
