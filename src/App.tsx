@@ -7,6 +7,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { CookieConsent } from "@/components/CookieConsent";
 import { ScrollToTop } from "@/components/ScrollToTop";
 import Index from "./pages/Index";
+import BaumaschinenVerkaufen from "./pages/BaumaschinenVerkaufen";
 import Ankauf from "./pages/Ankauf";
 import SoFunktionierts from "./pages/SoFunktionierts";
 import Gebrauchtmaschinen from "./pages/Gebrauchtmaschinen";
@@ -55,6 +56,7 @@ const App = () => (
           <CookieConsent />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/baumaschinen-verkaufen" element={<BaumaschinenVerkaufen />} />
             <Route path="/ankauf" element={<Ankauf />} />
             <Route path="/so-funktionierts" element={<SoFunktionierts />} />
             <Route path="/gebrauchtmaschinen" element={<Gebrauchtmaschinen />} />

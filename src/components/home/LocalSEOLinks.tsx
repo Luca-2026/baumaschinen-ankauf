@@ -37,6 +37,17 @@ export function LocalSEOLinks() {
           </div>
         </AnimatedSection>
 
+        <AnimatedSection delay={0.05}>
+          <div className="text-center mb-6">
+            <Link
+              to="/baumaschinen-verkaufen"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-semibold hover:bg-primary/90 transition-colors"
+            >
+              Baumaschinen verkaufen – Alle Infos
+            </Link>
+          </div>
+        </AnimatedSection>
+
         <AnimatedSection delay={0.1}>
           <div className="flex flex-wrap justify-center gap-3">
             {localPages.map((page) => (

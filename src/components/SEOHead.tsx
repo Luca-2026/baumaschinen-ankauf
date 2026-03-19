@@ -94,6 +94,12 @@ export const SEO_CONFIG = {
     keywords: "Baumaschinen verkaufen, Baumaschinen Ankauf, Baumaschine verkaufen, Ankauf Baumaschinen, Bagger verkaufen, Bagger Ankauf, Arbeitsbühne verkaufen, Maschinen Ankauf NRW, gebrauchte Baumaschinen verkaufen, Baugeräte verkaufen",
     canonicalPath: "/",
   },
+  baumaschinenVerkaufen: {
+    title: "Baumaschinen verkaufen | Ankauf von Bagger & Arbeitsbühne in NRW",
+    description: "Baumaschinen verkaufen – schnell, fair und kostenlos! ✓ Bagger ✓ Arbeitsbühnen ✓ Radlader ✓ Kostenlose Bewertung ✓ Abholung in NRW ✓ Sofortige Zahlung.",
+    keywords: "Baumaschinen verkaufen, Baumaschinen Ankauf, Baumaschine verkaufen, Ankauf Baumaschinen, Bagger verkaufen, Arbeitsbühne verkaufen, gebrauchte Baumaschinen verkaufen, Baugeräte verkaufen",
+    canonicalPath: "/baumaschinen-verkaufen",
+  },
   ankauf: {
     title: "Baumaschine verkaufen – Kostenlose Bewertung in 2 Minuten",
     description: "Baumaschine jetzt verkaufen! Daten eingeben und sofort unverbindlichen Ankaufpreis erhalten. ✓ 100% kostenlos ✓ Keine Verpflichtung ✓ Abholung in NRW inklusive.",
