@@ -9,7 +9,7 @@ const navItems = [
   { label: "Ankauf-Check", href: "/ankauf" },
   { label: "So funktioniert's", href: "/so-funktionierts" },
   { label: "Gebrauchtmaschinen", href: "/gebrauchtmaschinen" },
-  { label: "Finanzierung", href: "/finanzierung" },
+  { label: "Ratgeber", href: "/ratgeber" },
   { label: "Standorte", href: "/standorte" },
   { label: "FAQ", href: "/faq" },
   { label: "Kontakt", href: "/kontakt" },

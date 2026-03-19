@@ -25,6 +25,14 @@ import AdminMachines from "./pages/admin/AdminMachines";
 import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
 
+// Blog / Ratgeber Pages
+import RatgeberIndex from "./pages/ratgeber/RatgeberIndex";
+import WasIstMeinBaggerWert from "./pages/ratgeber/WasIstMeinBaggerWert";
+import BaumaschinenVerkaufenTipps from "./pages/ratgeber/BaumaschinenVerkaufenTipps";
+import ArbeitsbuehneVerkaufenRatgeber from "./pages/ratgeber/ArbeitsbuehneVerkaufenRatgeber";
+import BaumaschinenAnkaufProzess from "./pages/ratgeber/BaumaschinenAnkaufProzess";
+import GebrauchteBaumaschinenMarkt from "./pages/ratgeber/GebrauchteBaumaschinenMarkt";
+
 // Local SEO Pages
 import Duesseldorf from "./pages/lokale-seo/Duesseldorf";
 import Koeln from "./pages/lokale-seo/Koeln";
@@ -85,6 +93,14 @@ const App = () => (
             <Route path="/bagger-verkaufen-oberhausen" element={<Oberhausen />} />
             <Route path="/bagger-verkaufen-moenchengladbach" element={<Moenchengladbach />} />
             <Route path="/bagger-verkaufen-aachen" element={<Aachen />} />
+            
+            {/* Ratgeber / Blog */}
+            <Route path="/ratgeber" element={<RatgeberIndex />} />
+            <Route path="/ratgeber/was-ist-mein-bagger-wert" element={<WasIstMeinBaggerWert />} />
+            <Route path="/ratgeber/baumaschinen-verkaufen-tipps" element={<BaumaschinenVerkaufenTipps />} />
+            <Route path="/ratgeber/arbeitsbuehne-verkaufen-ratgeber" element={<ArbeitsbuehneVerkaufenRatgeber />} />
+            <Route path="/ratgeber/baumaschinen-ankauf-prozess" element={<BaumaschinenAnkaufProzess />} />
+            <Route path="/ratgeber/gebrauchte-baumaschinen-markt" element={<GebrauchteBaumaschinenMarkt />} />
             
             {/* Admin Routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
