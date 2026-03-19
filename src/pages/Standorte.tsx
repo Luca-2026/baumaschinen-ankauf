@@ -18,12 +18,12 @@ const locations = [
   {
     city: "Krefeld",
     address: "Anrather Straße 291",
-    zip: "47803 Krefeld",
+    zip: "47807 Krefeld",
     phone: "+49 2151 417 990 4",
     email: "krefeld@wirkaufendeinebaumaschinen.de",
     hours: "Mo-Fr: 08:00 - 17:00 Uhr",
     description: "Unser Hauptstandort mit großem Maschinenpark und Werkstatt.",
-    mapUrl: "https://maps.google.com/?q=Anrather+Straße+291,+47803+Krefeld",
+    mapUrl: "https://maps.google.com/?q=Anrather+Straße+291,+47807+Krefeld",
     image: krefeldImage
   },
   {

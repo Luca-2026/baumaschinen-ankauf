@@ -35,8 +35,8 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Hauptstandort",
-    value: "Anrather Straße 291, 47803 Krefeld",
-    link: "https://maps.google.com/?q=Anrather+Straße+291,+47803+Krefeld",
+    value: "Anrather Straße 291, 47807 Krefeld",
+    link: "https://maps.google.com/?q=Anrather+Straße+291,+47807+Krefeld",
     description: "3 Standorte in NRW"
   }
 ];
