@@ -15,6 +15,14 @@
     </image:image>
   </url>
   
+  <!-- Baumaschinen verkaufen - Hauptkeyword Landingpage -->
+  <url>
+    <loc>https://www.wirkaufendeinebaumaschinen.de/baumaschinen-verkaufen</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  
   <!-- Ankauf-Wizard (Hauptkonversion) -->
   <url>
     <loc>https://www.wirkaufendeinebaumaschinen.de/ankauf</loc>
