@@ -56,6 +56,7 @@ const App = () => (
           <CookieConsent />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/baumaschinen-verkaufen" element={<BaumaschinenVerkaufen />} />
             <Route path="/ankauf" element={<Ankauf />} />
             <Route path="/so-funktionierts" element={<SoFunktionierts />} />
             <Route path="/gebrauchtmaschinen" element={<Gebrauchtmaschinen />} />

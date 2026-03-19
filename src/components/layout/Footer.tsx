@@ -104,6 +104,12 @@ export function Footer() {
                 Ankauf-Check starten
               </Link>
               <Link
+                to="/baumaschinen-verkaufen"
+                className="block text-sm text-primary-foreground/80 hover:text-accent transition-colors"
+              >
+                Baumaschinen verkaufen
+              </Link>
+              <Link
                 to="/so-funktionierts"
                 className="block text-sm text-primary-foreground/80 hover:text-accent transition-colors"
               >
