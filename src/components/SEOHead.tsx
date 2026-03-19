@@ -106,17 +106,11 @@ export const SEO_CONFIG = {
     keywords: "Baumaschine verkaufen, Baumaschinen Ankauf, Bagger verkaufen, Arbeitsbühne verkaufen, kostenlose Bewertung, Sofortangebot, Baugeräte Ankauf",
     canonicalPath: "/ankauf",
   },
-  ankaufBagger: {
-    title: "Bagger verkaufen | Minibagger, Kettenbagger & Mobilbagger Ankauf NRW",
-    description: "Bagger verkaufen zum Bestpreis! ✓ Minibagger ✓ Kettenbagger ✓ Mobilbagger ✓ Radlader – kostenlose Bewertung, faire Preise & kostenlose Abholung in NRW.",
-    keywords: "Bagger verkaufen, Bagger Ankauf, Minibagger verkaufen, Kettenbagger verkaufen, Mobilbagger verkaufen, Radlader verkaufen, Bagger Ankauf NRW",
-    canonicalPath: "/ankauf/bagger",
-  },
-  ankaufArbeitsbuehne: {
-    title: "Arbeitsbühne verkaufen | Scherenarbeitsbühne & Teleskopbühne Ankauf NRW",
-    description: "Arbeitsbühne verkaufen zum fairen Preis! ✓ Scherenarbeitsbühnen ✓ Teleskopbühnen ✓ Gelenkbühnen – kostenlose Bewertung & Abholung in NRW.",
-    keywords: "Arbeitsbühne verkaufen, Arbeitsbühne Ankauf, Scherenarbeitsbühne verkaufen, Teleskopbühne verkaufen, Hubarbeitsbühne verkaufen, Arbeitsbühne Ankauf NRW",
-    canonicalPath: "/ankauf/arbeitsbuehne",
+  ratgeber: {
+    title: "Ratgeber | Baumaschinen verkaufen – Tipps & Wissen",
+    description: "Ratgeber rund um den Verkauf von Baumaschinen: Bagger-Wertermittlung, Verkaufstipps, Marktanalysen und mehr. Jetzt informieren!",
+    keywords: "Baumaschinen Ratgeber, Bagger Wert, Baumaschinen verkaufen Tipps, Arbeitsbühne verkaufen",
+    canonicalPath: "/ratgeber",
   },
   soFunktionierts: {
     title: "So funktioniert der Baumaschinen-Verkauf | 4 einfache Schritte",
