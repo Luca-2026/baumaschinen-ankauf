@@ -6,7 +6,7 @@ const locations = [
   {
     city: "Krefeld",
     address: "Anrather Straße 291",
-    zip: "47803 Krefeld",
+    zip: "47807 Krefeld",
   },
   {
     city: "Bonn",
