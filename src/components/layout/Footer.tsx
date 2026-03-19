@@ -56,7 +56,7 @@ export function Footer() {
             </p>
             <address className="not-italic text-sm text-primary-foreground/80 space-y-1">
               <p>Anrather Straße 291</p>
-              <p>47803 Krefeld</p>
+              <p>47807 Krefeld</p>
             </address>
             <div className="mt-4 space-y-2">
               <a
