@@ -114,8 +114,8 @@ export const SEO_CONFIG = {
   },
   soFunktionierts: {
     title: "So funktioniert der Baumaschinen-Verkauf | 4 einfache Schritte",
-    description: "Erfahren Sie, wie einfach Sie Ihre Baumaschine verkaufen können. In nur 4 Schritten von der Bewertung bis zur Auszahlung – schnell, transparent und ohne versteckte Kosten.",
-    keywords: "Baumaschine verkaufen Ablauf, Bagger verkaufen wie, Arbeitsbühne Ankauf Prozess, Baumaschinen Bewertung",
+    description: "Baumaschinen verkaufen in 4 Schritten: Bewertung → Angebot → Abholung → Auszahlung. Schnell, transparent und ohne Kosten. Jetzt starten!",
+    keywords: "Baumaschine verkaufen Ablauf, Baumaschinen Ankauf Prozess, Bagger verkaufen wie, Arbeitsbühne verkaufen Schritte",
     canonicalPath: "/so-funktionierts",
   },
   gebrauchtmaschinen: {
