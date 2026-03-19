@@ -87,6 +87,49 @@
     <priority>0.7</priority>
   </url>
   
+  <!-- Ratgeber / Blog -->
+  <url>
+    <loc>https://www.wirkaufendeinebaumaschinen.de/ratgeber</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.wirkaufendeinebaumaschinen.de/ratgeber/was-ist-mein-bagger-wert</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.wirkaufendeinebaumaschinen.de/ratgeber/baumaschinen-verkaufen-tipps</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.wirkaufendeinebaumaschinen.de/ratgeber/arbeitsbuehne-verkaufen-ratgeber</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.wirkaufendeinebaumaschinen.de/ratgeber/baumaschinen-ankauf-prozess</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.wirkaufendeinebaumaschinen.de/ratgeber/gebrauchte-baumaschinen-markt</loc>
+    <lastmod>2026-03-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Kontakt -->
   <url>
     <loc>https://www.wirkaufendeinebaumaschinen.de/kontakt</loc>
