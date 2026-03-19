@@ -25,6 +25,14 @@ import AdminMachines from "./pages/admin/AdminMachines";
 import AdminSettings from "./pages/admin/AdminSettings";
 import NotFound from "./pages/NotFound";
 
+// Blog / Ratgeber Pages
+import RatgeberIndex from "./pages/ratgeber/RatgeberIndex";
+import WasIstMeinBaggerWert from "./pages/ratgeber/WasIstMeinBaggerWert";
+import BaumaschinenVerkaufenTipps from "./pages/ratgeber/BaumaschinenVerkaufenTipps";
+import ArbeitsbuehneVerkaufenRatgeber from "./pages/ratgeber/ArbeitsbuehneVerkaufenRatgeber";
+import BaumaschinenAnkaufProzess from "./pages/ratgeber/BaumaschinenAnkaufProzess";
+import GebrauchteBaumaschinenMarkt from "./pages/ratgeber/GebrauchteBaumaschinenMarkt";
+
 // Local SEO Pages
 import Duesseldorf from "./pages/lokale-seo/Duesseldorf";
 import Koeln from "./pages/lokale-seo/Koeln";
