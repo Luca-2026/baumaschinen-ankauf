@@ -89,33 +89,33 @@ export function SEOHead({
 // Pre-defined SEO configurations for each page
 export const SEO_CONFIG = {
   home: {
-    title: "Bagger & Arbeitsbühne verkaufen | Schneller Ankauf in NRW",
-    description: "Verkaufen Sie Ihren Bagger oder Ihre Arbeitsbühne schnell & fair in NRW. ✓ Kostenlose Bewertung ✓ Sofortiges Angebot ✓ Kostenlose Abholung ✓ Sichere Zahlung. Jetzt Ankaufpreis erhalten!",
-    keywords: "Bagger verkaufen, Arbeitsbühne verkaufen, Baumaschinen Ankauf, Minibagger verkaufen, Kettenbagger verkaufen, Baumaschinen verkaufen NRW, Gebrauchtmaschinen Ankauf",
+    title: "Baumaschinen verkaufen | Bagger & Arbeitsbühne Ankauf NRW",
+    description: "Baumaschinen verkaufen in NRW ✓ Kostenlose Bewertung in 2 Min ✓ Sofort Ankaufpreis erhalten ✓ Kostenlose Abholung ✓ Faire Preise. Bagger, Arbeitsbühnen & mehr – jetzt unverbindlich anfragen!",
+    keywords: "Baumaschinen verkaufen, Baumaschinen Ankauf, Baumaschine verkaufen, Ankauf Baumaschinen, Bagger verkaufen, Bagger Ankauf, Arbeitsbühne verkaufen, Maschinen Ankauf NRW, gebrauchte Baumaschinen verkaufen, Baugeräte verkaufen",
     canonicalPath: "/",
   },
   ankauf: {
-    title: "Baumaschine verkaufen - Kostenlose Bewertung in 2 Minuten",
-    description: "Verkaufen Sie Ihre Baumaschine jetzt! Geben Sie die Daten ein und erhalten Sie sofort eine unverbindliche Preisschätzung. Schnell, einfach und kostenlos.",
-    keywords: "Baumaschine verkaufen, Bagger Ankauf, Arbeitsbühne Ankauf, kostenlose Bewertung, Sofortangebot",
+    title: "Baumaschine verkaufen – Kostenlose Bewertung in 2 Minuten",
+    description: "Baumaschine jetzt verkaufen! Daten eingeben und sofort unverbindlichen Ankaufpreis erhalten. ✓ 100% kostenlos ✓ Keine Verpflichtung ✓ Abholung in NRW inklusive.",
+    keywords: "Baumaschine verkaufen, Baumaschinen Ankauf, Bagger verkaufen, Arbeitsbühne verkaufen, kostenlose Bewertung, Sofortangebot, Baugeräte Ankauf",
     canonicalPath: "/ankauf",
   },
   ankaufBagger: {
-    title: "Bagger verkaufen | Minibagger, Kettenbagger & Mobilbagger Ankauf",
-    description: "Verkaufen Sie Ihren Bagger zum Bestpreis! Wir kaufen Minibagger, Kettenbagger, Mobilbagger und Radlader aller Marken. Kostenlose Abholung in NRW.",
-    keywords: "Bagger verkaufen, Minibagger verkaufen, Kettenbagger verkaufen, Mobilbagger verkaufen, Radlader verkaufen, Bagger Ankauf NRW",
+    title: "Bagger verkaufen | Minibagger, Kettenbagger & Mobilbagger Ankauf NRW",
+    description: "Bagger verkaufen zum Bestpreis! ✓ Minibagger ✓ Kettenbagger ✓ Mobilbagger ✓ Radlader – kostenlose Bewertung, faire Preise & kostenlose Abholung in NRW.",
+    keywords: "Bagger verkaufen, Bagger Ankauf, Minibagger verkaufen, Kettenbagger verkaufen, Mobilbagger verkaufen, Radlader verkaufen, Bagger Ankauf NRW",
     canonicalPath: "/ankauf/bagger",
   },
   ankaufArbeitsbuehne: {
-    title: "Arbeitsbühne verkaufen | Scherenarbeitsbühne & Teleskopbühne Ankauf",
-    description: "Verkaufen Sie Ihre Arbeitsbühne zum fairen Preis! Wir kaufen Scherenarbeitsbühnen, Teleskopbühnen und Gelenkteleskopbühnen. Kostenlose Bewertung!",
-    keywords: "Arbeitsbühne verkaufen, Scherenarbeitsbühne verkaufen, Teleskopbühne verkaufen, Hubarbeitsbühne verkaufen, Arbeitsbühne Ankauf NRW",
+    title: "Arbeitsbühne verkaufen | Scherenarbeitsbühne & Teleskopbühne Ankauf NRW",
+    description: "Arbeitsbühne verkaufen zum fairen Preis! ✓ Scherenarbeitsbühnen ✓ Teleskopbühnen ✓ Gelenkbühnen – kostenlose Bewertung & Abholung in NRW.",
+    keywords: "Arbeitsbühne verkaufen, Arbeitsbühne Ankauf, Scherenarbeitsbühne verkaufen, Teleskopbühne verkaufen, Hubarbeitsbühne verkaufen, Arbeitsbühne Ankauf NRW",
     canonicalPath: "/ankauf/arbeitsbuehne",
   },
   soFunktionierts: {
     title: "So funktioniert der Baumaschinen-Verkauf | 4 einfache Schritte",
-    description: "Erfahren Sie, wie einfach Sie Ihre Baumaschine verkaufen können. In nur 4 Schritten von der Bewertung bis zur Auszahlung – schnell, transparent und ohne versteckte Kosten.",
-    keywords: "Baumaschine verkaufen Ablauf, Bagger verkaufen wie, Arbeitsbühne Ankauf Prozess, Baumaschinen Bewertung",
+    description: "Baumaschinen verkaufen in 4 Schritten: Bewertung → Angebot → Abholung → Auszahlung. Schnell, transparent und ohne Kosten. Jetzt starten!",
+    keywords: "Baumaschine verkaufen Ablauf, Baumaschinen Ankauf Prozess, Bagger verkaufen wie, Arbeitsbühne verkaufen Schritte",
     canonicalPath: "/so-funktionierts",
   },
   gebrauchtmaschinen: {
