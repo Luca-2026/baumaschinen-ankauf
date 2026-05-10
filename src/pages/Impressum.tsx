@@ -15,7 +15,7 @@ export default function Impressum() {
             </h1>
 
             <div className="prose prose-gray max-w-none space-y-8">
-              {/* Angaben gemäß § 5 TMG */}
+              {/* Angaben gemäß § 5 DDG */}
               <section>
                 <h2 className="text-xl sm:text-2xl font-semibold text-headline mb-4">
                   Angaben gemäß § 5 TMG
