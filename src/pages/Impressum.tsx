@@ -18,7 +18,7 @@ export default function Impressum() {
               {/* Angaben gemäß § 5 DDG */}
               <section>
                 <h2 className="text-xl sm:text-2xl font-semibold text-headline mb-4">
-                  Angaben gemäß § 5 TMG
+                  Angaben gemäß § 5 DDG
                 </h2>
                 <p className="text-sm sm:text-base text-foreground mb-4">
                   <BrandName className="text-base" /> ist ein Service der
