@@ -65,7 +65,7 @@ export default defineConfig(({ mode }) => ({
         rendererOptions: {
           renderAfterDocumentEvent: "render-event",
           maxConcurrentRoutes: 4,
-          headless: "new",
+          headless: true,
           launchOptions: {
             args: ["--no-sandbox", "--disable-setuid-sandbox"],
           },
