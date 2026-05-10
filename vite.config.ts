@@ -59,7 +59,7 @@ export default defineConfig(({ mode }) => ({
     react(),
     mode === "development" && componentTagger(),
     mode === "production" &&
-      (prerender as unknown as (opts: unknown) => unknown)({
+      (prerender as unknown as (opts: unknown) => PluginOption)({
         routes: PRERENDER_ROUTES,
         renderer: "@prerenderer/renderer-puppeteer",
         rendererOptions: {
