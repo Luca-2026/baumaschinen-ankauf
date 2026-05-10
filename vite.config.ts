@@ -2,7 +2,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
+// @ts-expect-error - no bundled types
 import prerender from "@prerenderer/rollup-plugin";
+import type { PluginOption } from "vite";
 
 // All routes that should be prerendered to static HTML for SEO.
 // Keep in sync with src/App.tsx routes (excluding /admin/*).
